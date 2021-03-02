@@ -1,7 +1,9 @@
+
 // MATTHEW BAYNE
 // CS-492 Project 2
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,11 +11,40 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class GEDCOM_Parser{
+	
+	/**
+	 * Class to represent the individuals and store all data on that individual
+	 * @author ryanp
+	 *
+	 */
+	private class Individual {
+		public String id;		// id of the individual
+		public String name;
+		public char gender;		// either 'M' or 'F'
+		public String birthday;	// date of birth
+		public int age;
+		public boolean isAlive;
+		public String death;	// date of death
+		public String child;	// id of family
+		public String spouse;	// id of family
+		
+		public Individual(String id) {
+			this.id = id;
+		}
+		
+	}//end Individual class
     
     public static String [] lvl0_tags = {"HEAD", "TRLR", "NOTE"};
     public static String [] lvl1_tags = {"NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "DIV", "MARR"};
     public static String [] lvl2_tags = {"DATE"};
     
+    public static String [] dateable_tags = {"BIRT", "DEAT", "DIV", "MARR"};
+    
+    // HashMap that maps the individual's id to the corresponding object
+    public static HashMap<String,Individual> individuals = new HashMap<String,Individual>();
+    // represents the most recent individual to update their information
+    public static Individual current_indi = null;
+    public static String last_tag = null;
 
     //checks if input is valid
     public static String checkValid(String [][] whole_line, int iter){
@@ -99,6 +130,32 @@ public class GEDCOM_Parser{
         	
         	
         	if (whole_line[i].length == 2) {
+        		if (valid.equals("Y")) {
+        			// handles updates for the DATE fields
+        			if (whole_line[i][1].equals(lvl2_tags[0])) {
+        				if(Arrays.asList(dateable_tags).contains(last_tag)) {
+        					// TODO: US01 make sure dates given are before the current date
+        					if(last_tag.equals(dateable_tags[0])) {
+        						// TODO: US27 Determine individuals' names and store in their object
+        						// update the birthday field of last individual
+        						current_indi.birthday = whole_line[i][2];
+        					} else if (last_tag.equals(dateable_tags[1])) {
+        						// TODO: US29 Add IDs of deceased individuals into a list
+        						// update death field of last individual and set isAlive to false
+        						current_indi.death = whole_line[i][2];
+        						current_indi.isAlive = false;
+        					} else if (last_tag.equals(dateable_tags[2])) {
+        						// update divorce field of last family
+        					} else if (last_tag.equals(dateable_tags[3])) {
+        						// TODO: US10 make sure people getting married are older than 14
+        						// TODO: US30 Add IDs of married individuals into a list
+        						// update marriage field of last family
+        					}
+        				} else {
+        					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
+        				}
+        			}
+        		}
         		System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
         	}
         	if (whole_line[i].length == 1) {
@@ -107,7 +164,24 @@ public class GEDCOM_Parser{
         	
         	if (whole_line[i].length > 2) {	
         		if (whole_line[i][2].equals("INDI") || whole_line[i][2].equals("FAM")) {
-            		System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][2] + "|" + valid + "|" + whole_line[i][1]);
+            		
+        			
+        			// part 3
+        			if (whole_line[i][2].equals("INDI")) {
+            			String id = whole_line[i][1];
+            			// create the last individual record to pull data for
+            			if(individuals.get(id) == null) {
+            				// individual does not yet exist
+            				current_indi = (new GEDCOM_Parser()).new Individual(id); 
+            				individuals.put(id, current_indi);
+            			} else {
+            				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
+            			}
+            		}
+            		// end part 3
+        			
+        			
+        			System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][2] + "|" + valid + "|" + whole_line[i][1]);
             		
             	}
         		else {
