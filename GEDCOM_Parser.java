@@ -179,6 +179,7 @@ public class GEDCOM_Parser{
             						// update divorce field of last family
             					} else if (last_tag.equals(dateable_tags[3])) {
             						// TODO: US10 make sure people getting married are older than 14
+							currentFam.setIsMarried();
             						// TODO: US30 Add IDs of married individuals into a list
             						// update marriage field of last family
             					}
