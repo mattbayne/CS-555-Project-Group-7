@@ -1,4 +1,4 @@
-
+package GEDCOM;
 // MATTHEW BAYNE
 // CS-492 Project 2
 
@@ -9,30 +9,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import GEDCOM.Entities.*;
 
 public class GEDCOM_Parser{
-	
-	/**
-	 * Class to represent the individuals and store all data on that individual
-	 * @author ryanp
-	 *
-	 */
-	private class Individual {
-		public String id;		// id of the individual
-		public String name;
-		public char gender;		// either 'M' or 'F'
-		public String birthday;	// date of birth
-		public int age;
-		public boolean isAlive;
-		public String death;	// date of death
-		public String child;	// id of family
-		public String spouse;	// id of family
-		
-		public Individual(String id) {
-			this.id = id;
-		}
-		
-	}//end Individual class
     
     public static String [] lvl0_tags = {"HEAD", "TRLR", "NOTE"};
     public static String [] lvl1_tags = {"NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "DIV", "MARR"};
@@ -109,6 +88,7 @@ public class GEDCOM_Parser{
         	while (scanner.hasNextLine()) {
         		line_list.add(scanner.nextLine());
             }
+        	scanner.close();
         } catch (FileNotFoundException e) {
         	e.printStackTrace();
         }
@@ -138,12 +118,12 @@ public class GEDCOM_Parser{
         					if(last_tag.equals(dateable_tags[0])) {
         						// TODO: US27 Determine individuals' names and store in their object
         						// update the birthday field of last individual
-        						current_indi.birthday = whole_line[i][2];
+        						current_indi.setBirthday(whole_line[i][2]);
         					} else if (last_tag.equals(dateable_tags[1])) {
         						// TODO: US29 Add IDs of deceased individuals into a list
         						// update death field of last individual and set isAlive to false
-        						current_indi.death = whole_line[i][2];
-        						current_indi.isAlive = false;
+        						current_indi.setDeath(whole_line[i][2]);
+        						current_indi.setIsAlive(false);
         					} else if (last_tag.equals(dateable_tags[2])) {
         						// update divorce field of last family
         					} else if (last_tag.equals(dateable_tags[3])) {
@@ -172,7 +152,7 @@ public class GEDCOM_Parser{
             			// create the last individual record to pull data for
             			if(individuals.get(id) == null) {
             				// individual does not yet exist
-            				current_indi = (new GEDCOM_Parser()).new Individual(id); 
+            				current_indi = new Individual(id); 
             				individuals.put(id, current_indi);
             			} else {
             				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
