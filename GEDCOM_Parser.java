@@ -21,8 +21,12 @@ public class GEDCOM_Parser{
     
     // HashMap that maps the individual's id to the corresponding object
     public static HashMap<String,Individual> individuals = new HashMap<String,Individual>();
-    // represents the most recent individual to update their information
+    // HashMap that maps the family's id to the corresponding object
+    public static HashMap<String,Family> families = new HashMap<String,Family>();
+    // represents the most recent individual encountered
     public static Individual current_indi = null;
+    // represents the most recent family encountered
+    public static Family current_fam = null;
     public static String last_tag = null;
 
     //checks if input is valid
@@ -110,67 +114,87 @@ public class GEDCOM_Parser{
         	
         	
         	if (whole_line[i].length == 2) {
-        		if (valid.equals("Y")) {
-        			// handles updates for the DATE fields
-        			if (whole_line[i][1].equals(lvl2_tags[0])) {
-        				if(Arrays.asList(dateable_tags).contains(last_tag)) {
-        					// TODO: US01 make sure dates given are before the current date
-        					if(last_tag.equals(dateable_tags[0])) {
-        						// TODO: US27 Determine individuals' names and store in their object
-        						// update the birthday field of last individual
-        						current_indi.setBirthday(whole_line[i][2]);
-        					} else if (last_tag.equals(dateable_tags[1])) {
-        						// TODO: US29 Add IDs of deceased individuals into a list
-        						// update death field of last individual and set isAlive to false
-        						current_indi.setDeath(whole_line[i][2]);
-        						current_indi.setIsAlive(false);
-        					} else if (last_tag.equals(dateable_tags[2])) {
-        						// update divorce field of last family
-        					} else if (last_tag.equals(dateable_tags[3])) {
-        						// TODO: US10 make sure people getting married are older than 14
-        						// TODO: US30 Add IDs of married individuals into a list
-        						// update marriage field of last family
-        					}
-        				} else {
-        					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
-        				}
-        			}
-        		}
-        		System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+        		//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+        		last_tag = whole_line[i][1];
         	}
         	if (whole_line[i].length == 1) {
-        		System.out.print("<-- " + whole_line[i][0] + "|" + "N" + "|");
+        		//System.out.print("<-- " + whole_line[i][0] + "|" + "N" + "|");
+        		last_tag = whole_line[i][0];
         	}
         	
         	if (whole_line[i].length > 2) {	
-        		if (whole_line[i][2].equals("INDI") || whole_line[i][2].equals("FAM")) {
-            		
+        		// part 3
+    			if (whole_line[i][2].equals("INDI")) {
+        			String id = whole_line[i][1];
+        			// create the last individual record to pull data for
+        			if(individuals.get(id) == null) {
+        				// individual does not yet exist
+        				current_indi = new Individual(id); 
+        				individuals.put(id, current_indi);
+        			} else {
+        				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
+        			}
+        			last_tag = "INDI";
+        		} else if (whole_line[i][2].equals("FAM")) {
         			
-        			// part 3
-        			if (whole_line[i][2].equals("INDI")) {
-            			String id = whole_line[i][1];
-            			// create the last individual record to pull data for
-            			if(individuals.get(id) == null) {
-            				// individual does not yet exist
-            				current_indi = new Individual(id); 
-            				individuals.put(id, current_indi);
-            			} else {
-            				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
-            			}
-            		}
-            		// end part 3
+        			// TODO create new family
         			
-        			
-        			System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][2] + "|" + valid + "|" + whole_line[i][1]);
-            		
-            	}
-        		else {
-        			System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+        			last_tag = "FAM";
+        		} else {
+        			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+        		    // Copy rest of the arguments into an array
         			String[] arr = Arrays.copyOfRange(whole_line[i], 2, whole_line[i].length);
+        			// Combine contents of array into one argument string
+        			String arg = "";
+        			for ( String str : arr ) {
+        				arg += str;
+        			}
+        			String tag = whole_line[i][1];
+        			
+        			if (valid.equals("Y")) {
+        				
+        				if(tag.equals(lvl1_tags[0])) { // NAME tag for individual
+        					current_indi.setName(arg);
+        				} else if (tag.equals(lvl1_tags[1])) { // SEX tag for individual
+        					current_indi.setGender(arg.charAt(0));
+        				} else if (tag.equals(lvl1_tags[4])) { // FAMC tag for individual
+        					current_indi.addChild(arg);
+        				} else if (tag.equals(lvl1_tags[5])) { // FAMS tag for individual
+        					current_indi.addSpouse(arg);
+        				} // BIRT and DEAT excluded because they will be set when DATE is encountered
+        				// TODO FAMILY tags
+        				else if (whole_line[i][1].equals(lvl2_tags[0])) { // handles updates for the DATE fields
+            				if(Arrays.asList(dateable_tags).contains(last_tag)) {
+            					// TODO: US01 make sure dates given are before the current date
+            					if(last_tag.equals(dateable_tags[0])) {
+            						// TODO: US27 Determine individuals' names and store in their object
+            						// update the birthday field of last individual
+            						current_indi.setBirthday(whole_line[i][2]);
+            					} else if (last_tag.equals(dateable_tags[1])) {
+            						// TODO: US29 Add IDs of deceased individuals into a list
+            						// update death field of last individual and set isAlive to false
+            						current_indi.setDeath(whole_line[i][2]);
+            						current_indi.setIsAlive(false);
+            					} else if (last_tag.equals(dateable_tags[2])) {
+            						// update divorce field of last family
+            					} else if (last_tag.equals(dateable_tags[3])) {
+            						// TODO: US10 make sure people getting married are older than 14
+            						// TODO: US30 Add IDs of married individuals into a list
+            						// update marriage field of last family
+            					}
+            				} else {
+            					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
+            				}
+                		}
+        				
+        			}
+        			/*
         			for (int x=0; x<arr.length; x++) {
         				System.out.print(arr[x]);
         				System.out.print(" ");
         			}
+        			*/
+        			last_tag = whole_line[i][1];
         		}
         	}	
         	
