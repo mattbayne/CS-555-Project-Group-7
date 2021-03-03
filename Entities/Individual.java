@@ -1,6 +1,8 @@
 package GEDCOM.Entities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.Date;
 
 public class Individual {
@@ -11,12 +13,14 @@ public class Individual {
 	private int age;
 	private boolean isAlive;
 	private Date death;	// date of death
-	private String child;	// id of family
-	private String spouse;	// id of family
+	private ArrayList<String> child;	// ids of families
+	private ArrayList<String> spouse;	// ids of families
 	
 	// Constructor
 	public Individual(String id) {
 		this.id = id;
+		this.child = new ArrayList<String>();
+		this.spouse = new ArrayList<String>();
 	}
 
 	// Getters and Setters
@@ -72,20 +76,20 @@ public class Individual {
 		this.death = stringToDate(death);
 	}
 
-	public String getChild() {
+	public ArrayList<String> getChild() {
 		return child;
 	}
 
-	public void setChild(String child) {
-		this.child = child;
+	public void addChild(String child) {
+		this.child.add(child);
 	}
 
-	public String getSpouse() {
+	public  ArrayList<String> getSpouse() {
 		return spouse;
 	}
 
-	public void setSpouse(String spouse) {
-		this.spouse = spouse;
+	public void addSpouse(String spouse) {
+		this.spouse.add(spouse);
 	}
 	
 	/**
@@ -108,6 +112,19 @@ public class Individual {
 		year = Integer.parseInt(dateSplit[2]) - 1900;
 		
 		return new Date(year, month, day);
+	}
+	
+	public String toString() {
+		return "Individual:\n"
+				+ "\tId:\t" + this.id + "\n"
+				+ "\tName:\t"+ this.name + "\n"
+				+ "\tGender:\t"+ this.gender + "\n"
+				+ "\tBirthday:\t"+ this.birthday.toString() + "\n"
+				+ "\tAge:\t" + "Not implemented" + "\n"
+				+ "\tAlive:\t" + (isAlive ? "Y" : "N") + "\n"
+				+ "\tDeath:\t" + this.death.toString() + "\n"
+				+ "\tChild:\t" + this.child.toString() + "\n"
+				+ "\tSpouse:\t" + this.spouse.toString();
 	}
 	
 }

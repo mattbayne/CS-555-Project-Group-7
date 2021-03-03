@@ -1,5 +1,6 @@
 package GEDCOM.Entities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -12,10 +13,11 @@ public class Family {
 	private String husbName;
 	private String wifeId;
 	private String wifeName;
-	private String[] childIds;
+	private ArrayList<String> childIds;
 	
 	public Family(String id) {
 		this.id = id;
+		this.childIds = new ArrayList<String>();
 	}
 	
 	// Getters and Setters
@@ -71,12 +73,12 @@ public class Family {
 		this.wifeName = wifeName;
 	}
 
-	public String[] getChildIds() {
+	public ArrayList<String> getChildIds() {
 		return childIds;
 	}
 
-	public void setChildIds(String[] childIds) {
-		this.childIds = childIds;
+	public void addChildIds(String childIds) {
+		this.childIds.add(childIds);
 	}
 	
 	/**
@@ -99,6 +101,18 @@ public class Family {
 		year = Integer.parseInt(dateSplit[2]) - 1900;
 		
 		return new Date(year, month, day);
+	}
+	
+	public String toString() {
+		return "Family:\n"
+				+ "\tId:\t" + this.id + "\n"
+				+ "\tMarried:\t" + this.married.toString() + "\n"
+				+ "\tDivorced:\t" + this.divorced.toString() + "\n"
+				+ "\tHusb Id:\t" + this.husbId + "\n"
+				+ "\tHusb Name:\t" + this.husbName + "\n"
+				+ "\tWife Id:\t" + this.wifeId + "\n"
+				+ "\tWife Name:\t" + this.wifeName + "\n"
+				+ "\tChildren:\t" + "Not implemented";
 	}
 	
 }
