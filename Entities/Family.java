@@ -26,13 +26,14 @@ public class Family {
 		return id;
 	}
 
-	public boolean getMarried() {
+	public boolean getIsMarried() {
 		return isMarried;
 	}
 
-	public void setMarried() {
+	public void setIsMarried() {
 		this.isMarried = true;
 	}
+
 
 	public Date getMarriageDate() {
 		return marriageDate;
