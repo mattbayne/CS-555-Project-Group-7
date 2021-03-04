@@ -5,7 +5,10 @@ package GEDCOM;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,8 +24,10 @@ public class GEDCOM_Parser{
     
     // HashMap that maps the individual's id to the corresponding object
     public static HashMap<String,Individual> individuals = new HashMap<String,Individual>();
+    public static ArrayList<String> indi_ids = new ArrayList<String>();
     // HashMap that maps the family's id to the corresponding object
     public static HashMap<String,Family> families = new HashMap<String,Family>();
+    public static ArrayList<String> fam_ids = new ArrayList<String>();
     // represents the most recent individual encountered
     public static Individual current_indi = null;
     // represents the most recent family encountered
@@ -81,7 +86,7 @@ public class GEDCOM_Parser{
 		}
     	
     } //end checkValid()
-
+    
     public static void main(String[] args){
     	
     	File file = new File(args[0]);
@@ -131,6 +136,7 @@ public class GEDCOM_Parser{
         				// individual does not yet exist
         				current_indi = new Individual(id); 
         				individuals.put(id, current_indi);
+        				indi_ids.add(id);
         			} else {
         				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
         			}
@@ -138,8 +144,14 @@ public class GEDCOM_Parser{
         		} else if (whole_line[i][2].equals("FAM")) {
         			
         			// TODO create new family
-        			
-        			last_tag = "FAM";
+        			String id = whole_line[i][1];
+        			if(families.get(id) == null) {
+        				current_fam = new Family(id);
+        				families.put(id, current_fam);
+        				fam_ids.add(id);
+        			} else {
+        				System.out.println("Error: Family with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
+        			}
         		} else {
         			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
         		    // Copy rest of the arguments into an array
@@ -147,7 +159,7 @@ public class GEDCOM_Parser{
         			// Combine contents of array into one argument string
         			String arg = "";
         			for ( String str : arr ) {
-        				arg += str;
+        				arg += str + (str.equals(arr[arr.length-1]) ? "" : " ");
         			}
         			String tag = whole_line[i][1];
         			
@@ -163,32 +175,42 @@ public class GEDCOM_Parser{
         					current_indi.addSpouse(arg);
         				} // BIRT and DEAT excluded because they will be set when DATE is encountered
         				// TODO FAMILY tags
+        				else if (tag.equals(lvl1_tags[6])) { // HUSB tag for fam
+        					current_fam.setHusbId(arg);
+        					current_fam.setHusbName(individuals.get(arg).getName());
+        				}
+        				else if (tag.equals(lvl1_tags[7])) { // WIFE tag for fam
+        					current_fam.setWifeId(arg);
+        					current_fam.setWifeName(individuals.get(arg).getName());
+        				}
+        				else if (tag.equals(lvl1_tags[8])) { // CHIL tag for fam
+        					current_fam.addChildIds(arg);
+        				}
         				else if (whole_line[i][1].equals(lvl2_tags[0])) { // handles updates for the DATE fields
             				if(Arrays.asList(dateable_tags).contains(last_tag)) {
             					// TODO: US01 make sure dates given are before the current date
             					if(last_tag.equals(dateable_tags[0])) {
             						// TODO: US27 Determine individuals' names and store in their object
             						// update the birthday field of last individual
-            						current_indi.setBirthday(whole_line[i][2]);
+            						current_indi.setBirthday(arg);
             					} else if (last_tag.equals(dateable_tags[1])) {
             						// TODO: US29 Add IDs of deceased individuals into a list
             						// update death field of last individual and set isAlive to false
-            						current_indi.setDeath(whole_line[i][2]);
+            						current_indi.setDeath(arg);
             						current_indi.setIsAlive(false);
             					} else if (last_tag.equals(dateable_tags[2])) {
             						// update divorce field of last family
+            						current_fam.setDivorced(arg);
             					} else if (last_tag.equals(dateable_tags[3])) {
             						// TODO: US10 make sure people getting married are older than 14
-							current_fam.setIsMarried();
             						// TODO: US30 Add IDs of married individuals into a list
             						// update marriage field of last family
+            						current_fam.setMarried(arg);
             					}
             				} else {
             					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
             				}
-                		}
-        			//add the current_fam into the Family hashmap
-						families.add(current_fam);	
+                		}	
         			}
         			/*
         			for (int x=0; x<arr.length; x++) {
@@ -202,6 +224,13 @@ public class GEDCOM_Parser{
         	
         	System.out.print("\n"); 
         	System.out.print("\n"); 
+        }
+        
+        for(String id : indi_ids) {
+        	System.out.println(individuals.get(id));
+        }
+        for(String id : fam_ids) {
+        	System.out.println(families.get(id));
         }
    
     } //end main()

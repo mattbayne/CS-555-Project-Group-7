@@ -116,15 +116,15 @@ public class Individual {
 	
 	public String toString() {
 		return "Individual:\n"
-				+ "\tId:\t" + this.id + "\n"
-				+ "\tName:\t"+ this.name + "\n"
-				+ "\tGender:\t"+ this.gender + "\n"
+				+ "\tId:\t\t" + this.id + "\n"
+				+ "\tName:\t\t"+ this.name + "\n"
+				+ "\tGender:\t\t"+ this.gender + "\n"
 				+ "\tBirthday:\t"+ this.birthday.toString() + "\n"
-				+ "\tAge:\t" + "Not implemented" + "\n"
-				+ "\tAlive:\t" + (isAlive ? "Y" : "N") + "\n"
-				+ "\tDeath:\t" + this.death.toString() + "\n"
-				+ "\tChild:\t" + this.child.toString() + "\n"
-				+ "\tSpouse:\t" + this.spouse.toString();
+				+ "\tAge:\t\t" + "Not implemented" + "\n"
+				+ "\tAlive:\t\t" + (isAlive ? "Y" : "N") + "\n"
+				+ "\tDeath:\t\t" + (death==null ? "NA" : this.death.toString()) + "\n"
+				+ "\tChild:\t\t" + this.child.toString() + "\n"
+				+ "\tSpouse:\t\t" + this.spouse.toString();
 	}
 	
 }

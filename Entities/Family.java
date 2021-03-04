@@ -7,8 +7,7 @@ import java.util.Date;
 public class Family {
 
 	private String id;
-	private boolean isMarried;
-	private Date marriageDate;
+	private Date married;
 	private Date divorced;
 	private String husbId;
 	private String husbName;
@@ -26,21 +25,12 @@ public class Family {
 		return id;
 	}
 
-	public boolean getIsMarried() {
-		return isMarried;
+	public Date getMarried() {
+		return married;
 	}
 
-	public void setIsMarried() {
-		this.isMarried = true;
-	}
-
-
-	public Date getMarriageDate() {
-		return marriageDate;
-	}
-
-	public void setMarriageDate(String date) {
-		this.marriageDate = stringToDate(date);
+	public void setMarried(String married) {
+		this.married = stringToDate(married);
 	}
 
 	public Date getDivorced() {
@@ -116,9 +106,8 @@ public class Family {
 	public String toString() {
 		return "Family:\n"
 				+ "\tId:\t" + this.id + "\n"
-				+ "\tMarried:\t" + this.isMarried.toString() + "\n"
-				+ "\tMarriage Date:\t" + this.marriedDate.toString() + "\n"
-				+ "\tDivorced:\t" + this.divorced.toString() + "\n"
+				+ "\tMarried:\t" + (married==null ? "NA" : this.married.toString()) + "\n"
+				+ "\tDivorced:\t" + (divorced==null ? "NA" : this.divorced.toString()) + "\n"
 				+ "\tHusb Id:\t" + this.husbId + "\n"
 				+ "\tHusb Name:\t" + this.husbName + "\n"
 				+ "\tWife Id:\t" + this.wifeId + "\n"
