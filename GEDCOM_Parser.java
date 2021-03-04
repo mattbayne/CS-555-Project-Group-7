@@ -187,7 +187,8 @@ public class GEDCOM_Parser{
             					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
             				}
                 		}
-        				
+        			//add the current_fam into the Family hashmap
+						families.add(current_fam);	
         			}
         			/*
         			for (int x=0; x<arr.length; x++) {
