@@ -1,41 +1,40 @@
-package GEDCOM;
+package parser;
 // MATTHEW BAYNE
 // CS-492 Project 2
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
+import entities.*;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
-import GEDCOM.Entities.*;
 
 public class GEDCOM_Parser{
     
-    public static String [] lvl0_tags = {"HEAD", "TRLR", "NOTE"};
-    public static String [] lvl1_tags = {"NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "DIV", "MARR"};
-    public static String [] lvl2_tags = {"DATE"};
+    public String [] lvl0_tags = {"HEAD", "TRLR", "NOTE"};
+    public String [] lvl1_tags = {"NAME", "SEX", "BIRT", "DEAT", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "DIV", "MARR"};
+    public String [] lvl2_tags = {"DATE"};
     
-    public static String [] dateable_tags = {"BIRT", "DEAT", "DIV", "MARR"};
+    public String [] dateable_tags = {"BIRT", "DEAT", "DIV", "MARR"};
     
     // HashMap that maps the individual's id to the corresponding object
-    public static HashMap<String,Individual> individuals = new HashMap<String,Individual>();
-    public static ArrayList<String> indi_ids = new ArrayList<String>();
+    public HashMap<String,Individual> individuals = new HashMap<String,Individual>();
+    public ArrayList<String> indi_ids = new ArrayList<String>();
     // HashMap that maps the family's id to the corresponding object
-    public static HashMap<String,Family> families = new HashMap<String,Family>();
-    public static ArrayList<String> fam_ids = new ArrayList<String>();
+    public HashMap<String,Family> families = new HashMap<String,Family>();
+    public ArrayList<String> fam_ids = new ArrayList<String>();
     // represents the most recent individual encountered
-    public static Individual current_indi = null;
+    public Individual current_indi = null;
     // represents the most recent family encountered
-    public static Family current_fam = null;
-    public static String last_tag = null;
+    public Family current_fam = null;
+    public String last_tag = null;
 
     //checks if input is valid
-    public static String checkValid(String [][] whole_line, int iter){
+    public String checkValid(String [][] whole_line, int iter){
     	
     	if (whole_line[iter].length == 1) {
     		return "N";
@@ -87,9 +86,9 @@ public class GEDCOM_Parser{
     	
     } //end checkValid()
     
-    public static void main(String[] args){
+    public void parse(String filename){
     	
-    	File file = new File(args[0]);
+    	File file = new File(filename);
     	List<String> line_list = new ArrayList<String>();
     	 
         try {
@@ -106,8 +105,6 @@ public class GEDCOM_Parser{
         String[][] whole_line = new String[line_list.size()][10];
          
         for (int i=0; i<line_list.size(); i++) {
-        	String [] s = line_arr[i].split(" ");
-        	int length = s.length;
         	
         	whole_line[i] = line_arr[i].split(" ");
         	
@@ -137,7 +134,7 @@ public class GEDCOM_Parser{
         				individuals.put(id, current_indi);
         				indi_ids.add(id);
         			} else {
-        				System.out.println("Error: Individual with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
+        				System.out.println("Error: Individual with this ID already exists. ("+ filename + " -> Line " + i + ")");
         			}
         			last_tag = "INDI";
         		} else if (whole_line[i][2].equals("FAM")) {
@@ -149,7 +146,7 @@ public class GEDCOM_Parser{
         				families.put(id, current_fam);
         				fam_ids.add(id);
         			} else {
-        				System.out.println("Error: Family with this ID already exists. ("+ args[0] + " -> Line " + i + ")");
+        				System.out.println("Error: Family with this ID already exists. ("+ filename + " -> Line " + i + ")");
         			}
         		} else {
         			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
@@ -207,7 +204,7 @@ public class GEDCOM_Parser{
             						current_fam.setMarried(arg);
             					}
             				} else {
-            					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+args[0]+" -> Line "+i+")");
+            					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+filename+" -> Line "+i+")");
             				}
                 		}	
         			}
@@ -229,6 +226,6 @@ public class GEDCOM_Parser{
         	System.out.println(families.get(id));
         }
    
-    } //end main()
+    } //end parse()
 
 } //end class
