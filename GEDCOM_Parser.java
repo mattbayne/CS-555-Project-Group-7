@@ -106,7 +106,6 @@ public class GEDCOM_Parser{
         String[][] whole_line = new String[line_list.size()][10];
          
         for (int i=0; i<line_list.size(); i++) {
-        	System.out.println("--> "+ line_arr[i]);
         	String [] s = line_arr[i].split(" ");
         	int length = s.length;
         	
@@ -221,9 +220,6 @@ public class GEDCOM_Parser{
         			last_tag = whole_line[i][1];
         		}
         	}	
-        	
-        	System.out.print("\n"); 
-        	System.out.print("\n"); 
         }
         
         for(String id : indi_ids) {

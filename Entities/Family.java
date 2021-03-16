@@ -1,14 +1,12 @@
 package GEDCOM.Entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 public class Family {
 
 	private String id;
-	private Date married;
-	private Date divorced;
+	private GEDDate married;
+	private GEDDate divorced;
 	private String husbId;
 	private String husbName;
 	private String wifeId;
@@ -25,20 +23,20 @@ public class Family {
 		return id;
 	}
 
-	public Date getMarried() {
+	public GEDDate getMarried() {
 		return married;
 	}
 
 	public void setMarried(String married) {
-		this.married = stringToDate(married);
+		this.married = new GEDDate(married);
 	}
 
-	public Date getDivorced() {
+	public GEDDate getDivorced() {
 		return divorced;
 	}
 
 	public void setDivorced(String divorced) {
-		this.divorced = stringToDate(divorced);
+		this.divorced = new GEDDate(divorced);
 	}
 
 	public String getHusbId() {
@@ -81,33 +79,11 @@ public class Family {
 		this.childIds.add(childIds);
 	}
 	
-	/**
-	 * Takes in the GEDCOM String representation of the date and converts it to a java.util.Date object.
-	 * @param dateString GEDCOM String representation of the date
-	 * @return instance of the java.util.Date class
-	 */
-	private Date stringToDate(String dateString) {
-		final String[] gedcomMonths = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-		int day, month, year;
-		
-		String[] dateSplit = dateString.split(" ");
-		day = Integer.parseInt(dateSplit[0]);
-		for(int i = 0; i < gedcomMonths.length; i++) {
-			if ( dateSplit[1].equals(gedcomMonths[i])) {
-				month = i;
-			}
-		}
-		month = Arrays.binarySearch(gedcomMonths,dateSplit[1]);
-		year = Integer.parseInt(dateSplit[2]) - 1900;
-		
-		return new Date(year, month, day);
-	}
-	
 	public String toString() {
 		return "Family:\n"
 				+ "\tId:\t" + this.id + "\n"
-				+ "\tMarried:\t" + (married==null ? "NA" : this.married.toString()) + "\n"
-				+ "\tDivorced:\t" + (divorced==null ? "NA" : this.divorced.toString()) + "\n"
+				+ "\tMarried:\t" + (married==null ? "NA" : this.married) + "\n"
+				+ "\tDivorced:\t" + (divorced==null ? "NA" : this.divorced) + "\n"
 				+ "\tHusb Id:\t" + this.husbId + "\n"
 				+ "\tHusb Name:\t" + this.husbName + "\n"
 				+ "\tWife Id:\t" + this.wifeId + "\n"
