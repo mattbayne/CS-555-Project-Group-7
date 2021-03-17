@@ -3,10 +3,11 @@ package entities;
 import java.util.Date;
 
 public class GEDDate {
-	private Date date;
+	public Date date;
 	private final int[] dayCount = { 31,28,31,30,31,30,31,31,30,31,30,31};
 	private final String[] months = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-	private int day, month = -1, year;
+	private int day, month = -1;
+	public int year;
 	
 	@SuppressWarnings("deprecation")
 	public GEDDate(String date) {		
