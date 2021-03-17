@@ -41,8 +41,7 @@ public class GEDCOM_Parser{
     public static void printList (Individual[] arr){
 	int size = arr[].length;
     	for (int i = 0; i < size-1; i++){
-		System.out.print(arr[i]);
-		System.out.print("\n");
+		System.out.println(arr[i]);
 	}
     } //end printList()
     
