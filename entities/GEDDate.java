@@ -64,9 +64,10 @@ public class GEDDate {
 	@SuppressWarnings("deprecation")
 	public int yearsSinceToday() {
 		Date today = new Date();
-		int years = today.getYear() - this.year;
-		if (today.getMonth() < this.month ||
-				today.getMonth() == this.month && today.getDay() < this.day) {
+		int years = today.getYear() + 1900 - this.year;
+		System.out.println(years);
+		if (today.getMonth() > this.month ||
+				today.getMonth() == this.month && today.getDay() > this.day) {
 			years--;
 		}
 		return years;
@@ -83,6 +84,5 @@ public class GEDDate {
 	public String toString() {
 		return this.day + " " + months[this.month] + " " + this.year;
 	}
-	
 	
 }
