@@ -126,7 +126,7 @@ public class Individual {
 				+ "\tName:\t\t"+ this.name + "\n"
 				+ "\tGender:\t\t"+ this.gender + "\n"
 				+ "\tBirthday:\t"+ this.birthday + "\n"
-				+ "\tAge:\t\t" + "Not implemented" + "\n"
+				+ "\tAge:\t\t" + calculateAge(this.age) + "\n"
 				+ "\tAlive:\t\t" + (isAlive ? "Y" : "N") + "\n"
 				+ "\tDeath:\t\t" + (death==null ? "NA" : this.death) + "\n"
 				+ "\tChild:\t\t" + this.child.toString() + "\n"
