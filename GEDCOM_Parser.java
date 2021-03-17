@@ -104,12 +104,12 @@ public class GEDCOM_Parser{
     	
     } //end checkValid()
     
-    public void parse(String filename){
+    public void parse(String filename, String outputFilename){
     	
     	File file = new File(filename);
     	List<String> line_list = new ArrayList<String>();
     	try {
-    		File output = new File("output.txt");
+    		File output = new File(outputFilename);
     		output.createNewFile();
     		FileWriter fw = new FileWriter(output);
 	        try {
