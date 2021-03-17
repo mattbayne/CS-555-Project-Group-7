@@ -20,6 +20,8 @@ public class GEDCOM_Parser{
     public String [] lvl2_tags = {"DATE"};
     
     public String [] dateable_tags = {"BIRT", "DEAT", "DIV", "MARR"};
+    public Individual [] dead_indis = new Individual [5000];
+    public Individual [] married_indis = new Individual [5000];
     
     // HashMap that maps the individual's id to the corresponding object
     public HashMap<String,Individual> individuals = new HashMap<String,Individual>();
@@ -32,7 +34,9 @@ public class GEDCOM_Parser{
     // represents the most recent family encountered
     public Family current_fam = null;
     public String last_tag = null;
-
+    public int dead_count = 0;
+    public int marr_count = 0;
+    
     //checks if input is valid
     public String checkValid(String [][] whole_line, int iter){
     	
@@ -191,6 +195,8 @@ public class GEDCOM_Parser{
             						current_indi.setBirthday(arg);
             					} else if (last_tag.equals(dateable_tags[1])) {
             						// TODO: US29 Add IDs of deceased individuals into a list
+							dead_indis[dead_count] = current_indi;
+							dead_count++;
             						// update death field of last individual and set isAlive to false
             						current_indi.setDeath(arg);
             						current_indi.setIsAlive(false);
@@ -200,6 +206,8 @@ public class GEDCOM_Parser{
             					} else if (last_tag.equals(dateable_tags[3])) {
             						// TODO: US10 make sure people getting married are older than 14
             						// TODO: US30 Add IDs of married individuals into a list
+							married_indis[marr_count] = current_indi;
+							marr_count++;
             						// update marriage field of last family
             						current_fam.setMarried(arg);
             					}
