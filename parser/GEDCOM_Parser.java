@@ -247,7 +247,10 @@ public class GEDCOM_Parser{
 	        		}
 	        	}	
 	        }
-	        
+	       //ALL VALIDATING HERE AFTER FAMS AND INDIVIDUALS HAVE BEEN FILLED:
+		//User Story 10
+			fw.write(Validations.us10(families, individuals));
+
 	        for(String id : indi_ids) {
 	        	fw.write(individuals.get(id).toString() + "\n");
 	        }
