@@ -12,6 +12,8 @@ import entities.*;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GEDCOM_Parser{
     
@@ -20,6 +22,8 @@ public class GEDCOM_Parser{
     public String [] lvl2_tags = {"DATE"};
     
     public String [] dateable_tags = {"BIRT", "DEAT", "DIV", "MARR"};
+    public Individual [] dead_indis = new Individual [5000];
+    public Individual [] married_indis = new Individual [5000];
     
     // HashMap that maps the individual's id to the corresponding object
     public HashMap<String,Individual> individuals = new HashMap<String,Individual>();
@@ -32,7 +36,21 @@ public class GEDCOM_Parser{
     // represents the most recent family encountered
     public Family current_fam = null;
     public String last_tag = null;
+    public int dead_count = 0;
+    public int marr_count = 0;
 
+    //prints out the array
+    public static void printList (Individual[] arr,FileWriter fw){
+	int size = arr.length;
+    	for (int i = 0; i < size-1; i++){
+			try {
+				fw.write(arr[i].toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+    } //end printList()
+    
     //checks if input is valid
     public String checkValid(String [][] whole_line, int iter){
     	
@@ -86,150 +104,160 @@ public class GEDCOM_Parser{
     	
     } //end checkValid()
     
-    public void parse(String filename){
+    public void parse(String filename, String outputFilename){
     	
     	File file = new File(filename);
     	List<String> line_list = new ArrayList<String>();
-    	 
-        try {
-        	Scanner scanner = new Scanner(file);
-        	while (scanner.hasNextLine()) {
-        		line_list.add(scanner.nextLine());
-            }
-        	scanner.close();
-        } catch (FileNotFoundException e) {
-        	e.printStackTrace();
-        }
-         
-        String[] line_arr = line_list.toArray(new String[line_list.size()]); 
-        String[][] whole_line = new String[line_list.size()][10];
-         
-        for (int i=0; i<line_list.size(); i++) {
-        	
-        	whole_line[i] = line_arr[i].split(" ");
-        	
-        	
-        	String valid = checkValid(whole_line, i);
-        	
-        	
-        	
-        	
-        	if (whole_line[i].length == 2) {
-        		//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
-        		last_tag = whole_line[i][1];
-        	}
-        	if (whole_line[i].length == 1) {
-        		//System.out.print("<-- " + whole_line[i][0] + "|" + "N" + "|");
-        		last_tag = whole_line[i][0];
-        	}
-        	
-        	if (whole_line[i].length > 2) {	
-        		// part 3
-    			if (whole_line[i][2].equals("INDI")) {
-        			String id = whole_line[i][1];
-        			// create the last individual record to pull data for
-        			if(individuals.get(id) == null) {
-        				// individual does not yet exist
-        				current_indi = new Individual(id); 
-        				individuals.put(id, current_indi);
-        				indi_ids.add(id);
-        			} else {
-        				System.out.println("Error: Individual with this ID already exists. ("+ filename + " -> Line " + i + ")");
-        			}
-        			last_tag = "INDI";
-        		} else if (whole_line[i][2].equals("FAM")) {
-        			
-        			// TODO create new family
-        			String id = whole_line[i][1];
-        			if(families.get(id) == null) {
-        				current_fam = new Family(id);
-        				families.put(id, current_fam);
-        				fam_ids.add(id);
-        			} else {
-        				System.out.println("Error: Family with this ID already exists. ("+ filename + " -> Line " + i + ")");
-        			}
-        		} else {
-        			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
-        		    // Copy rest of the arguments into an array
-        			String[] arr = Arrays.copyOfRange(whole_line[i], 2, whole_line[i].length);
-        			// Combine contents of array into one argument string
-        			String arg = "";
-        			for ( String str : arr ) {
-        				arg += str + (str.equals(arr[arr.length-1]) ? "" : " ");
-        			}
-        			String tag = whole_line[i][1];
-        			
-        			if (valid.equals("Y")) {
-        				
-        				if(tag.equals(lvl1_tags[0])) { // NAME tag for individual
-        					current_indi.setName(arg);
-        				} else if (tag.equals(lvl1_tags[1])) { // SEX tag for individual
-        					current_indi.setGender(arg.charAt(0));
-        				} else if (tag.equals(lvl1_tags[4])) { // FAMC tag for individual
-        					current_indi.addChild(arg);
-        				} else if (tag.equals(lvl1_tags[5])) { // FAMS tag for individual
-        					current_indi.addSpouse(arg);
-        				} // BIRT and DEAT excluded because they will be set when DATE is encountered
-        				// TODO FAMILY tags
-        				else if (tag.equals(lvl1_tags[6])) { // HUSB tag for fam
-        					current_fam.setHusbId(arg);
-        					current_fam.setHusbName(individuals.get(arg).getName());
-        				}
-        				else if (tag.equals(lvl1_tags[7])) { // WIFE tag for fam
-        					current_fam.setWifeId(arg);
-        					current_fam.setWifeName(individuals.get(arg).getName());
-        				}
-        				else if (tag.equals(lvl1_tags[8])) { // CHIL tag for fam
-        					current_fam.addChildIds(arg);
-        				}
-        				else if (whole_line[i][1].equals(lvl2_tags[0])) { // handles updates for the DATE fields
-            				if(Arrays.asList(dateable_tags).contains(last_tag)) {
-            					// TODO: US01 make sure dates given are before the current date
-	            				try {	
-            						if(last_tag.equals(dateable_tags[0])) {
-	            						// TODO: US27 Determine individuals' names and store in their object
-	            						// update the birthday field of last individual
-	            						current_indi.setBirthday(arg);
-	            					} else if (last_tag.equals(dateable_tags[1])) {
-	            						// TODO: US29 Add IDs of deceased individuals into a list
-	            						// update death field of last individual and set isAlive to false
-	            						current_indi.setDeath(arg);
-	            						current_indi.setIsAlive(false);
-	            					} else if (last_tag.equals(dateable_tags[2])) {
-	            						// update divorce field of last family
-	            						current_fam.setDivorced(arg);
-	            					} else if (last_tag.equals(dateable_tags[3])) {
-	            						// TODO: US10 make sure people getting married are older than 14
-	            						// TODO: US30 Add IDs of married individuals into a list
-	            						// update marriage field of last family
-	            						current_fam.setMarried(arg);
+    	try {
+    		File output = new File(outputFilename);
+    		output.createNewFile();
+    		FileWriter fw = new FileWriter(output);
+	        try {
+	        	Scanner scanner = new Scanner(file);
+	        	while (scanner.hasNextLine()) {
+	        		line_list.add(scanner.nextLine());
+	            }
+	        	scanner.close();
+	        } catch (FileNotFoundException e) {
+	        	e.printStackTrace();
+	        }
+	         
+	        String[] line_arr = line_list.toArray(new String[line_list.size()]); 
+	        String[][] whole_line = new String[line_list.size()][10];
+	         
+	        for (int i=0; i<line_list.size(); i++) {
+	        	
+	        	whole_line[i] = line_arr[i].split(" ");
+	        	
+	        	
+	        	String valid = checkValid(whole_line, i);
+	        	
+	        	
+	        	
+	        	
+	        	if (whole_line[i].length == 2) {
+	        		//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+	        		last_tag = whole_line[i][1];
+	        	}
+	        	if (whole_line[i].length == 1) {
+	        		//System.out.print("<-- " + whole_line[i][0] + "|" + "N" + "|");
+	        		last_tag = whole_line[i][0];
+	        	}
+	        	
+	        	if (whole_line[i].length > 2) {	
+	        		// part 3
+	    			if (whole_line[i][2].equals("INDI")) {
+	        			String id = whole_line[i][1];
+	        			// create the last individual record to pull data for
+	        			if(individuals.get(id) == null) {
+	        				// individual does not yet exist
+	        				current_indi = new Individual(id); 
+	        				individuals.put(id, current_indi);
+	        				indi_ids.add(id);
+	        			} else {
+	        				fw.write("Error: Individual with this ID already exists. ("+ filename + " -> Line " + i + ")\n");
+	        			}
+	        			last_tag = "INDI";
+	        		} else if (whole_line[i][2].equals("FAM")) {
+	        			
+	        			// TODO create new family
+	        			String id = whole_line[i][1];
+	        			if(families.get(id) == null) {
+	        				current_fam = new Family(id);
+	        				families.put(id, current_fam);
+	        				fam_ids.add(id);
+	        			} else {
+	        				fw.write("Error: Family with this ID already exists. ("+ filename + " -> Line " + i + ")\n");
+	        			}
+	        		} else {
+	        			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
+	        		    // Copy rest of the arguments into an array
+	        			String[] arr = Arrays.copyOfRange(whole_line[i], 2, whole_line[i].length);
+	        			// Combine contents of array into one argument string
+	        			String arg = "";
+	        			for ( String str : arr ) {
+	        				arg += str + (str.equals(arr[arr.length-1]) ? "" : " ");
+	        			}
+	        			String tag = whole_line[i][1];
+	        			
+	        			if (valid.equals("Y")) {
+	        				
+	        				if(tag.equals(lvl1_tags[0])) { // NAME tag for individual
+	        					current_indi.setName(arg);
+	        				} else if (tag.equals(lvl1_tags[1])) { // SEX tag for individual
+	        					current_indi.setGender(arg.charAt(0));
+	        				} else if (tag.equals(lvl1_tags[4])) { // FAMC tag for individual
+	        					current_indi.addChild(arg);
+	        				} else if (tag.equals(lvl1_tags[5])) { // FAMS tag for individual
+	        					current_indi.addSpouse(arg);
+	        				} // BIRT and DEAT excluded because they will be set when DATE is encountered
+	        				// TODO FAMILY tags
+	        				else if (tag.equals(lvl1_tags[6])) { // HUSB tag for fam
+	        					current_fam.setHusbId(arg);
+	        					current_fam.setHusbName(individuals.get(arg).getName());
+	        				}
+	        				else if (tag.equals(lvl1_tags[7])) { // WIFE tag for fam
+	        					current_fam.setWifeId(arg);
+	        					current_fam.setWifeName(individuals.get(arg).getName());
+	        				}
+	        				else if (tag.equals(lvl1_tags[8])) { // CHIL tag for fam
+	        					current_fam.addChildIds(arg);
+	        				}
+	        				else if (whole_line[i][1].equals(lvl2_tags[0])) { // handles updates for the DATE fields
+	            				if(Arrays.asList(dateable_tags).contains(last_tag)) {
+	            					try {
+		            					// TODO: US01 make sure dates given are before the current date
+		            					if(last_tag.equals(dateable_tags[0])) {
+		            						// TODO: US27 Determine individuals' names and store in their object
+		            						// update the birthday field of last individual
+		            						current_indi.setBirthday(arg);
+		            					} else if (last_tag.equals(dateable_tags[1])) {
+		            						// TODO: US29 Add IDs of deceased individuals into a list
+											dead_indis[dead_count] = current_indi;
+											dead_count++;
+		            						// update death field of last individual and set isAlive to false
+		            						current_indi.setDeath(arg);
+		            						current_indi.setIsAlive(false);
+		            					} else if (last_tag.equals(dateable_tags[2])) {
+		            						// update divorce field of last family
+		            						current_fam.setDivorced(arg);
+		            					} else if (last_tag.equals(dateable_tags[3])) {
+		            						// TODO: US10 make sure people getting married are older than 14
+		            						// TODO: US30 Add IDs of married individuals into a list
+											married_indis[marr_count] = current_indi;
+											marr_count++;
+		            						// update marriage field of last family
+		            						current_fam.setMarried(arg);
+		            					}
+	            					} catch (Exception e) {
+	            						fw.write(e.getMessage() + " ("+filename+" -> Line "+i+")\n");
 	            					}
-	            				} catch(IllegalArgumentException e) {
-	            					System.out.println("Error: Invalid date provided: " + arg + ". ("+filename+" -> Line "+i+")");
+	            				} else {
+	            					fw.write("Error: Cannot use DATE tag on " + last_tag + " tag. ("+filename+" -> Line "+i+")\n");
 	            				}
-            				} else {
-            					System.out.println("Error: Cannot use DATE tag on " + last_tag + " tag. ("+filename+" -> Line "+i+")");
-            				}
-                		}	
-        			}
-        			/*
-        			for (int x=0; x<arr.length; x++) {
-        				System.out.print(arr[x]);
-        				System.out.print(" ");
-        			}
-        			*/
-        			last_tag = whole_line[i][1];
-        		}
-        	}	
-        }
-        
-        for(String id : indi_ids) {
-        	System.out.println(individuals.get(id));
-        }
-        for(String id : fam_ids) {
-        	System.out.println(families.get(id));
-        }
-   
+	                		}	
+	        			}
+	        			/*
+	        			for (int x=0; x<arr.length; x++) {
+	        				System.out.print(arr[x]);
+	        				System.out.print(" ");
+	        			}
+	        			*/
+	        			last_tag = whole_line[i][1];
+	        		}
+	        	}	
+	        }
+	        
+	        for(String id : indi_ids) {
+	        	fw.write(individuals.get(id).toString() + "\n");
+	        }
+	        for(String id : fam_ids) {
+	        	fw.write(families.get(id).toString() + "\n");
+	        }
+	        fw.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
     } //end parse()
 
 } //end class
