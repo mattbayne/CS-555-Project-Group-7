@@ -33,7 +33,7 @@ public class sprint1 {
 				"0 I01 INDI\n"); // attempt to add already existing id
 			fw1.close();
 			GEDCOM_Parser parser1 = new GEDCOM_Parser();
-			parser1.parse("testGed.ged");
+			parser1.parse("testGed.ged","rpSprint1Test.txt");
 			testFile.delete();
 			// test birth before death
 			File testFile2 = new File("testbirthbeforedeath.ged");
@@ -54,7 +54,7 @@ public class sprint1 {
 				"2 DATE 9 AUG 1933\n"); // invalid because birth is not before death
 			fw2.close();
 			GEDCOM_Parser parser2 = new GEDCOM_Parser();
-			parser2.parse("testbirthbeforedeath.ged");
+			parser2.parse("testbirthbeforedeath.ged","saSprint1Test.txt");
 			testFile2.delete();
 
 		} catch(IOException e) {
