@@ -155,7 +155,7 @@ public class GEDCOM_Parser{
 	        				individuals.put(id, current_indi);
 	        				indi_ids.add(id);
 	        			} else {
-	        				fw.write("Error: Individual with this ID already exists. ("+ filename + " -> Line " + i + ")");
+	        				fw.write("Error: Individual with this ID already exists. ("+ filename + " -> Line " + i + ")\n");
 	        			}
 	        			last_tag = "INDI";
 	        		} else if (whole_line[i][2].equals("FAM")) {
@@ -167,7 +167,7 @@ public class GEDCOM_Parser{
 	        				families.put(id, current_fam);
 	        				fam_ids.add(id);
 	        			} else {
-	        				fw.write("Error: Family with this ID already exists. ("+ filename + " -> Line " + i + ")");
+	        				fw.write("Error: Family with this ID already exists. ("+ filename + " -> Line " + i + ")\n");
 	        			}
 	        		} else {
 	        			//System.out.print("<-- " + whole_line[i][0] + "|" + whole_line[i][1] + "|" + valid + "|");
