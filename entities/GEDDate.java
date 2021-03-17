@@ -3,11 +3,10 @@ package entities;
 import java.util.Date;
 
 public class GEDDate {
-	public Date date;
+	private Date date;
 	private final int[] dayCount = { 31,28,31,30,31,30,31,31,30,31,30,31};
 	private final String[] months = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-	private int day, month = -1;
-	public int year;
+	private int day, month = -1, year;
 	
 	@SuppressWarnings("deprecation")
 	public GEDDate(String date) {		
@@ -56,6 +55,21 @@ public class GEDDate {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Calculates the years it has been since this date
+	 * @return years since this date
+	 */
+	@SuppressWarnings("deprecation")
+	public int yearsSinceToday() {
+		Date today = new Date();
+		int years = today.getYear() - this.year;
+		if (today.getMonth() < this.month ||
+				today.getMonth() == this.month && today.getDay() < this.day) {
+			years--;
+		}
+		return years;
 	}
 	
 	/**

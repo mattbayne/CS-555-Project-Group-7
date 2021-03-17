@@ -54,7 +54,7 @@ public class Individual {
 	}
 
 	public void setAge(int age) {
-		this.age = calculateAge(age);
+		this.age = age;
 	}
 
 	public boolean isAlive() {
@@ -88,45 +88,14 @@ public class Individual {
 	public void addSpouse(String spouse) {
 		this.spouse.add(spouse);
 	}
-
-	private int calculateAge(int age){
-		if (this.death != null){
-			age = this.death.year - this.birthday.year;
-		}
-		else{
-			age = 2021 - getBirthday().year;
-		}
-		return age;
-	}
-
-	private boolean birth_before_death(){
-		if (this.death != null){
-			if (this.death.date.after(this.birthday.date)){
-				return true;
-			}
-			return false;
-		}
-		return true;
-		
-	}
-
+	
 	public String toString() {
-
-		try{
-			if (birth_before_death() == false){
-				throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03:" + calculateAge(this.age) + ": died " + this.death + "before born" + this.birthday + "\n");
-			}
-		}catch (Exception e) {
-			throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03: " + calculateAge(this.age) + ": died " + this.death + " before born " + this.birthday + "\n");
-
-		}
-
 		return "Individual:\n"
 				+ "\tId:\t\t" + this.id + "\n"
 				+ "\tName:\t\t"+ this.name + "\n"
 				+ "\tGender:\t\t"+ this.gender + "\n"
 				+ "\tBirthday:\t"+ this.birthday + "\n"
-				+ "\tAge:\t\t" + calculateAge(this.age) + "\n"
+				+ "\tAge:\t\t" + "Not implemented" + "\n"
 				+ "\tAlive:\t\t" + (isAlive ? "Y" : "N") + "\n"
 				+ "\tDeath:\t\t" + (death==null ? "NA" : this.death) + "\n"
 				+ "\tChild:\t\t" + this.child.toString() + "\n"
