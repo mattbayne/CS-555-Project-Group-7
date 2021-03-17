@@ -36,6 +36,15 @@ public class GEDCOM_Parser{
     public String last_tag = null;
     public int dead_count = 0;
     public int marr_count = 0;
+
+    //prints out the array
+    public static void printList (Individual[] arr){
+	int size = arr[].length;
+    	for (int i = 0; i < size-1; i++){
+		System.out.print(arr[i]);
+		System.out.print("\n");
+	}
+    } //end printList()
     
     //checks if input is valid
     public String checkValid(String [][] whole_line, int iter){
