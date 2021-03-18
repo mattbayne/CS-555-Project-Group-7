@@ -11,7 +11,8 @@ public class sprint1 {
 	public static void main(String[] args) {
 		
 		try {
-			File testFile = new File("testGed.ged");
+			String testGed = "testGed.ged";
+			File testFile = new File(testGed);
 			testFile.createNewFile();
 			
 			FileWriter fw = new FileWriter(testFile);
@@ -33,7 +34,7 @@ public class sprint1 {
 				"0 I01 INDI\n"); // attempt to add already existing id
 			fw.close();
 			GEDCOM_Parser parser = new GEDCOM_Parser();
-			parser.parse("testGed.ged","US01Test.txt");
+			parser.parse(testGed,"US01Test.txt");
 			testFile.delete();
 			// test birth before death
 			testFile.createNewFile();
@@ -54,7 +55,7 @@ public class sprint1 {
 			
 			fw.close();
 			parser = new GEDCOM_Parser();
-			parser.parse("testbirthbeforedeath.ged","saSprint1Test.txt");
+			parser.parse(testGed,"saSprint1Test.txt");
 			testFile.delete();
 
 
@@ -65,12 +66,14 @@ public class sprint1 {
                     + "0 I01 INDI\n"
                     + "1 BIRT\n"
                     + "2 DATE 13 JAN 2020\n"
+                    + "1 FAMS F01\n"
                     + "0 F01 FAM\n"
                     + "1 MARR\n"
-                    + "2 DATE 10 JAN 2021\n"); // will have an error for marrying too young
+                    + "2 DATE 10 JAN 2021\n"
+                    + "1 HUSB I01\n"); // will have an error for marrying too young
 			fw.close();
             parser = new GEDCOM_Parser();
-            parser.parse("testGed.ged", "US10Test.txt");
+            parser.parse(testGed, "US10Test.txt");
             testFile.delete();//end test US10
 
 			// test US26
@@ -79,7 +82,7 @@ public class sprint1 {
 			fw.write(""); // invalid because .........................
 			fw.close();
 			parser = new GEDCOM_Parser();
-			parser.parse("testGed.ged","US26Test.txt");
+			parser.parse(testGed,"US26Test.txt");
 			testFile.delete();//end test US26
 
 
