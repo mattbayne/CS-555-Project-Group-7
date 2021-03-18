@@ -33,7 +33,7 @@ public class sprint1 {
 				"0 I01 INDI\n"); // attempt to add already existing id
 			fw.close();
 			GEDCOM_Parser parser = new GEDCOM_Parser();
-			parser.parse("testGed.ged","rpSprint1Test.txt");
+			parser.parse("testGed.ged","US01Test.txt");
 			testFile.delete();
 			// test birth before death
 			testFile.createNewFile();
