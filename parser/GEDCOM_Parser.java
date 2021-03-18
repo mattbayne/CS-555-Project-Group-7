@@ -254,8 +254,12 @@ public class GEDCOM_Parser{
 			fw.write(Validations.us26(families, individuals));
 
 	        for(String id : indi_ids) {
-	        	fw.write(individuals.get(id).toString() + "\n");
-	        }
+				try{
+				fw.write(individuals.get(id).toString() + "\n");
+				} catch (Exception e){
+					fw.write(e.getMessage());
+				}
+			}
 	        for(String id : fam_ids) {
 	        	fw.write(families.get(id).toString() + "\n");
 	        }

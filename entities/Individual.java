@@ -1,7 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 public class Individual {
 	private String id;		// id of the individual
 	private String name;
@@ -90,18 +90,42 @@ public class Individual {
 	}
 
 	private int calculateAge(int age){
+		int birth_year = this.birthday.getJavaDate().getYear() + 1900;
 		if (this.death != null){
-			age = this.death.year - this.birthday.year;
+		int death_year = this.death.getJavaDate().getYear() + 1900;
+			if (this.death.getJavaDate().getMonth() > this.birthday.getJavaDate().getMonth()){
+				age = death_year - birth_year;
+			}
+			else if (this.death.getJavaDate().getMonth() == this.birthday.getJavaDate().getMonth()){
+				if (this.death.getJavaDate().getDay() >= this.birthday.getJavaDate().getDay()){
+					age = death_year - birth_year;
+				}
+			}
+			else{
+				age = death_year - birth_year - 1;
+			}
 		}
 		else{
-			age = 2021 - getBirthday().year;
+			Date today = new Date();
+			int curr_year = today.getYear() + 1900;
+			if (today.getMonth() > this.birthday.getJavaDate().getMonth()){
+				age = curr_year - birth_year;
+			}
+			else if (today.getMonth() == this.birthday.getJavaDate().getMonth()){
+				if (today.getDay() >= this.birthday.getJavaDate().getDay()){
+					age = curr_year - birth_year;
+				}
+			}
+			else{
+				age = curr_year - birth_year - 1;
+			}
 		}
 		return age;
 	}
 
 	private boolean birth_before_death(){
 		if (this.death != null){
-			if (this.death.date.after(this.birthday.date)){
+			if (this.death.getJavaDate().after(this.birthday.getJavaDate())){
 				return true;
 			}
 			return false;
@@ -114,10 +138,10 @@ public class Individual {
 
 		try{
 			if (birth_before_death() == false){
-				throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03:" + calculateAge(this.age) + ": died " + this.death + "before born" + this.birthday + "\n");
+				throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03: " + this.name + "[" +this.id + "]" + ": died " + this.death + "before born" + this.birthday + "\n");
 			}
 		}catch (Exception e) {
-			throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03: " + calculateAge(this.age) + ": died " + this.death + " before born " + this.birthday + "\n");
+			throw new IllegalArgumentException("ERROR: INDIVIDUAL: US03: " + this.name + "[" +this.id + "]" + ": died " + this.death + " before born " + this.birthday + "\n");
 
 		}
 

@@ -51,6 +51,7 @@ public class sprint1 {
 				"2 DATE 9 JUL 2000\n"+ 
 				"1 DEAT Y\n"+ 
 				"2 DATE 9 AUG 1933\n"); // invalid because birth is not before death
+			
 			fw.close();
 			parser = new GEDCOM_Parser();
 			parser.parse("testbirthbeforedeath.ged","saSprint1Test.txt");
