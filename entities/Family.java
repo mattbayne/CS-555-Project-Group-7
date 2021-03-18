@@ -88,7 +88,7 @@ public class Family {
 				+ "\tHusb Name:\t" + this.husbName + "\n"
 				+ "\tWife Id:\t" + this.wifeId + "\n"
 				+ "\tWife Name:\t" + this.wifeName + "\n"
-				+ "\tChildren:\t" + "Not implemented";
+				+ "\tChildren:\t" + childIds.toString();
 	}
 	
 }

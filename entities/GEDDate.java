@@ -58,16 +58,29 @@ public class GEDDate {
 	}
 	
 	/**
-	 * Calculates the years it has been since this date
-	 * @return years since this date
+	 * Calculates the years it has been since today's date
+	 * @return years since today's date
 	 */
 	@SuppressWarnings("deprecation")
 	public int yearsSinceToday() {
 		Date today = new Date();
 		int years = today.getYear() + 1900 - this.year;
-		System.out.println(years);
 		if (today.getMonth() > this.month ||
 				today.getMonth() == this.month && today.getDay() > this.day) {
+			years--;
+		}
+		return years;
+	}
+	
+	/**
+	 * Calculates the years it has been since this date
+	 * @return years since this date
+	 */
+	@SuppressWarnings("deprecation")
+	public int yearsSince(Date date) {
+		int years = date.getYear() + 1900 - this.year;
+		if (date.getMonth() > this.month ||
+				date.getMonth() == this.month && date.getDay() > this.day) {
 			years--;
 		}
 		return years;

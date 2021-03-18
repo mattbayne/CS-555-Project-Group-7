@@ -59,7 +59,7 @@ public static String us26(HashMap<String, Family> families, HashMap<String, Indi
         }
         if(!fam.getChildIds().isEmpty()){
             for(String childId : fam.getChildIds()){
-                if(individuals.get(childId)==null){
+                if(individuals.get(childId)!=null){
                     boolean found = false;
                     for(String famId: individuals.get(childId).getChild()){
                         if(famId.equals(key)){
@@ -79,7 +79,7 @@ public static String us26(HashMap<String, Family> families, HashMap<String, Indi
         
         if(!person.getChild().isEmpty()){
             for(String famId : person.getChild()){
-                if(families.get(famId)==null){
+                if(families.get(famId)!=null){
                     boolean found = false;
                     for(String childId: families.get(famId).getChildIds()){
                         if(childId.equals(key)){
@@ -95,7 +95,7 @@ public static String us26(HashMap<String, Family> families, HashMap<String, Indi
         }
         if(!person.getSpouse().isEmpty()){
             for(String famId : person.getSpouse()){
-                if(families.get(famId)==null){
+                if(families.get(famId)!=null){
                     if(!families.get(famId).getHusbId().equals(key) && !families.get(famId).getWifeId().equals(key)){
                         output += "Error: Family with ID: "+famId+" in Individuals Record not found in Family Record.\n";
                     }

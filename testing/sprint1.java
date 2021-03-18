@@ -79,7 +79,33 @@ public class sprint1 {
 			// test US26
 			testFile.createNewFile();
 			fw = new FileWriter(testFile);
-			fw.write(""); // invalid because .........................
+			fw.write("0 HEAD\n"
+                    + "0 I01 INDI\n"
+                    + "1 FAMS F99\n"
+                    + "1 FAMC F01\n"
+                    + "1 BIRT\n"
+                    + "2 DATE 12 MAR 1976\n"
+                    + "0 I02 INDI\n"
+                    + "1 FAMS F01\n"
+                    + "1 FAMC F03\n"
+                    + "1 BIRT\n"
+                    + "2 DATE 15 FEB 1990\n"
+                    + "0 I03 INDI\n"
+                    + "1 FAMS F01\n"
+                    + "1 BIRT\n"
+                    + "2 DATE 28 JUL 1986\n"
+                    + "0 F01 FAM\n"
+                    + "1 HUSB I03\n"
+                    + "1 WIFE I02\n"
+                    + "1 CHIL I01\n"
+                    + "1 MARR\n"
+                    + "2 DATE 1 AUG 2016\n"
+                    + "0 F02 FAM\n"
+                    + "1 HUSB I01\n"
+                    + "1 WIFE I01\n"
+                    + "1 CHIL I02\n"
+                    + "1 MARR\n"
+                    + "2 DATE 30 DEC 2020\n");
 			fw.close();
 			parser = new GEDCOM_Parser();
 			parser.parse(testGed,"US26Test.txt");
