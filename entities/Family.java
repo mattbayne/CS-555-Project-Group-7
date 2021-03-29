@@ -87,6 +87,9 @@ public class Family {
 	 * @param individuals the hashmap of individuals used to get the details about each individual
 	 */
 	public void sortChildIdsByAge(HashMap<String,Individual> individuals){
+		// sort skipped if list is empty or has only one element
+		if (this.childIds.isEmpty() || this.childIds.size() == 1) return;
+
 		for(int i = 0; i < this.childIds.size(); i++){
 			int max = i;
 			for(int j = i; j < this.childIds.size(); j++){
