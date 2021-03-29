@@ -1,6 +1,8 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collections;
 
 public class Family {
 
@@ -77,6 +79,24 @@ public class Family {
 
 	public void addChildIds(String childIds) {
 		this.childIds.add(childIds);
+	}
+
+	/**
+	 * Will sort the arraylist of childIds by their age
+	 * with the oldest in the beginning and the youngest at the end.
+	 * @param individuals the hashmap of individuals used to get the details about each individual
+	 */
+	public void sortChildIdsByAge(HashMap<String,Individual> individuals){
+		for(int i = 0; i < this.childIds.size(); i++){
+			int max = i;
+			for(int j = i; j < this.childIds.size(); j++){
+				// if individuals age is greater than the current max we swap
+				if(individuals.get(this.childIds.get(j)).getAge() > individuals.get(this.childIds.get(max)).getAge()){
+					max = j;
+				}
+			}
+			Collections.swap(this.childIds, max, i);
+		}
 	}
 	
 	public String toString() {

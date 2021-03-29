@@ -77,6 +77,7 @@ public class Individual {
 		return child;
 	}
 
+	// TODO implement US28: Order siblings by age
 	public void addChild(String child) {
 		this.child.add(child);
 	}

@@ -6,7 +6,7 @@ public class Validations {
 //User Story #10 - Marriage after 14
 // (Both parents are at least 14 years old)
 
-public static String us10(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+public static String checkMarriageAge(HashMap<String, Family> families, HashMap<String, Individual> individuals){
     String output = "";
     for(String key : families.keySet()){
         Family fam = families.get(key);
@@ -29,7 +29,13 @@ public static String us10(HashMap<String, Family> families, HashMap<String, Indi
     return output;
 }
 
-public static String us26(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+/**
+ * Checks that each individual record has a corresponding record in families when necessary
+ * @param families hashmap of all families
+ * @param individuals hashmap of all individuals
+ * @return string of inconsistencies or empty string if none found
+ */
+public static String checkCorrespondingEntries(HashMap<String, Family> families, HashMap<String, Individual> individuals){
     String output = "";
     for(String key : families.keySet()){
         Family fam = families.get(key);
@@ -106,4 +112,5 @@ public static String us26(HashMap<String, Family> families, HashMap<String, Indi
     }
     return output;
 }
+
 }// end class Validations
