@@ -251,6 +251,10 @@ public class GEDCOM_Parser{
 			//User Story 26
 			fw.write(Validations.checkCorrespondingEntries(families, individuals));
 
+			for(Individual indi : individuals.values()) {
+				indi.setAge();
+			}
+			
 			// Sorts each families list of child Ids by their age
 			// this is done after the list
 			for (Family fam : families.values()){

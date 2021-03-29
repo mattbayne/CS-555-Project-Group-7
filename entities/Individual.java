@@ -53,8 +53,8 @@ public class Individual {
 		return age;
 	}
 
-	public void setAge(int age) {
-		this.age = calculateAge(age);
+	public void setAge() {
+		this.age = calculateAge();
 	}
 
 	public boolean isAlive() {
@@ -90,10 +90,12 @@ public class Individual {
 		this.spouse.add(spouse);
 	}
 
-	private int calculateAge(int age){
+	@SuppressWarnings(value = { "deprecation" })
+	private int calculateAge(){
+		int age = 0;
 		int birth_year = this.birthday.getJavaDate().getYear() + 1900;
 		if (this.death != null){
-		int death_year = this.death.getJavaDate().getYear() + 1900;
+			int death_year = this.death.getJavaDate().getYear() + 1900;
 			if (this.death.getJavaDate().getMonth() > this.birthday.getJavaDate().getMonth()){
 				age = death_year - birth_year;
 			}
@@ -115,6 +117,8 @@ public class Individual {
 			else if (today.getMonth() == this.birthday.getJavaDate().getMonth()){
 				if (today.getDay() >= this.birthday.getJavaDate().getDay()){
 					age = curr_year - birth_year;
+				} else {
+					age = curr_year - birth_year - 1;
 				}
 			}
 			else{
@@ -151,7 +155,7 @@ public class Individual {
 				+ "\tName:\t\t"+ this.name + "\n"
 				+ "\tGender:\t\t"+ this.gender + "\n"
 				+ "\tBirthday:\t"+ this.birthday + "\n"
-				+ "\tAge:\t\t" + calculateAge(this.age) + "\n"
+				+ "\tAge:\t\t" + this.age + "\n"
 				+ "\tAlive:\t\t" + (isAlive ? "Y" : "N") + "\n"
 				+ "\tDeath:\t\t" + (death==null ? "NA" : this.death) + "\n"
 				+ "\tChild:\t\t" + this.child.toString() + "\n"

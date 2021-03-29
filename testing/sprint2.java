@@ -35,7 +35,7 @@ public class sprint2 {
                 ); 
 			fw.close();
 			GEDCOM_Parser parser = new GEDCOM_Parser();
-			parser.parse(testGed,"US01Test.txt");
+			parser.parse(testGed,"US28test.txt");
 			testFile.delete();
         }catch(IOException e){
             e.printStackTrace();
