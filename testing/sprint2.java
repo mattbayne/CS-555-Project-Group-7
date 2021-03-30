@@ -27,11 +27,28 @@ public class sprint2 {
                 "1 BIRT\n"+
                 "2 DATE 26 JUL 2005\n"+
                 "1 FAMC F01\n"+
+                "0 I04 INDI\n"+
+                "1 BIRT\n"+
+                "2 DATE 19 JAN 1990\n"+
+                "1 FAMC F03\n"+
+                "0 I05 INDI\n"+
+                "1 BIRT\n"+
+                "2 DATE 1 DEC 2000\n"+
+                "1 FAMC F04\n"+
+                "0 I06 INDI\n"+
+                "1 BIRT\n"+
+                "2 DATE 29 AUG 2002\n"+
+                "1 FAMC F04\n"+
                 "0 F01 FAM\n"+   // family with reverse sorted children
                 "1 CHIL I01\n"+
                 "1 CHIL I02\n"+
                 "1 CHIL I03\n"+
-                "0 F02 FAM\n" // family with no children to make sure empty child list does not break the program
+                "0 F02 FAM\n"+ // family with no children to make sure empty child list does not break the program
+                "0 F03 FAM\n"+ // family with single child to test that method can handle size 1 arraylist
+                "1 CHIL I04\n"+
+                "0 F04 FAM\n"+ // family with already sorted children
+                "1 CHIL I05\n"+
+                "1 CHIL I06\n"
                 ); 
 			fw.close();
 			GEDCOM_Parser parser = new GEDCOM_Parser();

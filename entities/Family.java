@@ -94,8 +94,6 @@ public class Family {
 			int max = i;
 			for(int j = i; j < this.childIds.size(); j++){
 				// if individuals age is greater than the current max we swap
-//				System.out.println(individuals.get(this.childIds.get(j)).getAge());
-//				System.out.println(individuals.get(this.childIds.get(max)).getAge());
 				if(individuals.get(this.childIds.get(j)).getAge() > individuals.get(this.childIds.get(max)).getAge()){
 					max = j;
 				}
