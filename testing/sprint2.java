@@ -89,21 +89,21 @@ public class sprint2 {
                         "2 DATE 28 JAN 2019\n"+
                 "0 F01 FAM\n"+
                     "1 HUSB I01\n"+
-                    "1 WIFE IO2\n"+
+                    "1 WIFE I02\n"+
                     "1 MARR\n"+
                     "2 DATE 11 DEC 2006\n"+      //married after death
                     "1 DIV\n"+
                     "2 DATE 30 DEC 2007\n"+      //divorced after death
                 "0 F02 FAM\n"+
                     "1 HUSB I03\n"+
-                    "1 WIFE IO4\n"+
+                    "1 WIFE I04\n"+
                     "1 MARR\n"+
                     "2 DATE 11 DEC 2016\n"+
                     "1 DIV\n"+
                     "2 DATE 30 DEC 2017\n"+
                 "0 F03 FAM\n"+
                     "1 HUSB I05\n"+
-                    "1 WIFE IO6\n"+
+                    "1 WIFE I06\n"+
                     "1 MARR\n"+
                     "2 DATE 11 DEC 1988\n"+      //married before death
                     "1 DIV\n"+
