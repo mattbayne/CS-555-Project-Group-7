@@ -49,7 +49,8 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
                 }
             }
             if(!found){
-                output += "Error: Wife with ID: "+fam.getWifeId()+" in Family Record not found in Individuals Record.\n";
+                output += "Error: Wife with ID: "+fam.getWifeId()+" in Family Record not found in Individuals Record."+
+                    generateError(fam);
             }
         }
         if(fam.getHusbId() != null && individuals.get(fam.getHusbId())==null){
@@ -61,7 +62,8 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
                 }
             }
             if(!found){
-                output += "Error: Husband with ID: "+fam.getHusbId()+" in Family Record not found in Individuals Record.\n";
+                output += "Error: Husband with ID: "+fam.getHusbId()+" in Family Record not found in Individuals Record."+
+                    generateError(fam);
             }
         }
         if(!fam.getChildIds().isEmpty()){
@@ -75,7 +77,8 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
                         }
                     }
                     if(!found){
-                        output += "Error: Child with ID: "+childId+" in Family Record not found in Individuals Record.\n";
+                        output += "Error: Child with ID: "+childId+" in Family Record not found in Individuals Record."+
+                            generateError(fam);
                     }
                 }
             }    
@@ -95,7 +98,8 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
                         }
                     }
                     if(!found){
-                        output += "Error: Family with ID: "+famId+" in Individuals Record not found in Family Record.\n";
+                        output += "Error: Family with ID: "+famId+" in Individuals Record not found in Family Record."+
+                            generateError(person);
                     }
                 }
             }    
@@ -104,7 +108,8 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
             for(String famId : person.getSpouse()){
                 if(families.get(famId)!=null){
                     if(!families.get(famId).getHusbId().equals(key) && !families.get(famId).getWifeId().equals(key)){
-                        output += "Error: Family with ID: "+famId+" in Individuals Record not found in Family Record.\n";
+                        output += "Error: Family with ID: "+famId+" in Individuals Record not found in Family Record."+
+                            generateError(person);
                     }
                 }
             }    
@@ -132,13 +137,15 @@ public static String checkMarriedBeforeDeath(HashMap<String, Family> families, H
                 if(!wife.isAlive() && wife.getDeath()!= null){
                     Date wifeDeath = wife.getDeath().getJavaDate();
                     if(marriageDate.after(wifeDeath)){
-                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her marriage.\n";
+                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her marriage."+
+                            generateError(wife,fam);
                     }
                 }
                 if(!husb.isAlive() && husb.getDeath()!= null){
                     Date husbDeath = husb.getDeath().getJavaDate();
                     if(marriageDate.after(husbDeath)){
-                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his marriage.\n";
+                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his marriage."+
+                            generateError(husb,fam);
                     }
                 }
             }
@@ -164,13 +171,15 @@ public static String checkDivorcedBeforeDeath(HashMap<String, Family> families, 
                 if(!wife.isAlive() && wife.getDeath()!= null){
                     Date wifeDeath = wife.getDeath().getJavaDate();
                     if(divorceDate.after(wifeDeath)){
-                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her divorce.\n";
+                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her divorce."+
+                            generateError(wife,fam);
                     }
                 }
                 if(!husb.isAlive() && husb.getDeath()!= null){
                     Date husbDeath = husb.getDeath().getJavaDate();
                     if(divorceDate.after(husbDeath)){
-                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his divorce.\n";
+                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his divorce."+
+                            generateError(husb,fam);
                     }
                 }
             }
@@ -188,13 +197,15 @@ public static String birth_before_marriage(HashMap<String, Family> families, Has
             if(fam.getWifeId() != null){
                 Individual wife = individuals.get(fam.getWifeId());
                 if(wife.getBirthday().getJavaDate().after(fam.getMarried().getJavaDate())){
-                    output += ("ERROR: INDIVIDUAL: US02: " + wife.getId() + " born on " + wife.getBirthday() + " after marriage date " + fam.getMarried() + "\n");
+                    output += ("ERROR: INDIVIDUAL: US02: " + wife.getId() + " born on " + wife.getBirthday() +
+                        " after marriage date " + fam.getMarried() + generateError(wife,fam));
                 }
             }
             if(fam.getHusbId() != null){
                 Individual husb = individuals.get(fam.getHusbId());
                 if(husb.getBirthday().getJavaDate().after(fam.getMarried().getJavaDate())){
-                    output += ("ERROR: INDIVIDUAL: US02: " + husb.getId() + " born on " + husb.getBirthday() + " after marriage date " + fam.getMarried() + "\n");
+                    output += ("ERROR: INDIVIDUAL: US02: " + husb.getId() + " born on " + husb.getBirthday() +
+                        " after marriage date " + fam.getMarried() + generateError(husb,fam));
                 }
             }
         }
@@ -210,7 +221,8 @@ public static String marriage_before_divorce(HashMap<String, Family> families, H
         if(fam.getDivorced() != null){
             if(fam.getWifeId() != null && fam.getHusbId() != null){
                 if(fam.getMarried().getJavaDate().after(fam.getDivorced().getJavaDate())){
-                    output += ("ERROR: FAMILY: US04: divorced " + fam.getDivorced() + " before married " + fam.getMarried() + "\n");
+                    output += ("ERROR: FAMILY: US04: divorced " + fam.getDivorced() + " before married " + fam.getMarried() +
+                                generateError(fam));
                 }
             }   
         }  
@@ -218,7 +230,16 @@ public static String marriage_before_divorce(HashMap<String, Family> families, H
     return output;
 }
 
-
+private static String generateError(Individual i){
+    return "\nIndividual "+i.getId()+": Created on Line "+i.getLineNum();
+}
+private static String generateError(Family f){
+    return "\nFamily "+f.getId()+": Created on Line "+f.getLineNum();
+}
+private static String generateError(Individual i, Family f){
+    return "\nIndividual "+i.getId()+": Created on Line "+i.getLineNum()+
+            "\nFamily "+f.getId()+": Created on Line "+f.getLineNum();
+}
 
 
 

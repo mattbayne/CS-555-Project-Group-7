@@ -6,6 +6,7 @@ import java.util.Collections;
 
 public class Family {
 
+	private int lineNum;
 	private String id;
 	private GEDDate married;
 	private GEDDate divorced;
@@ -15,12 +16,17 @@ public class Family {
 	private String wifeName;
 	private ArrayList<String> childIds;
 	
-	public Family(String id) {
+	public Family(String id, int lineNum) {
 		this.id = id;
+		this.lineNum = lineNum;
 		this.childIds = new ArrayList<String>();
 	}
 	
 	// Getters and Setters
+	public int getLineNum(){
+		return lineNum;
+	}
+
 	public String getId() {
 		return id;
 	}

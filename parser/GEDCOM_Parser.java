@@ -163,7 +163,7 @@ public class GEDCOM_Parser{
 	        			// TODO create new family
 	        			String id = whole_line[i][1];
 	        			if(families.get(id) == null) {
-	        				current_fam = new Family(id);
+	        				current_fam = new Family(id,i);
 	        				families.put(id, current_fam);
 	        				fam_ids.add(id);
 	        			} else {
