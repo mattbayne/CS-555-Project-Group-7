@@ -207,5 +207,82 @@ public class sprint2 {
         }catch(IOException e){
             e.printStackTrace();
         }
+	
+	//TEST FOR US 07
+        
+        try{
+            String testGed = "testGed.ged";
+			File testFile = new File(testGed);
+			testFile.createNewFile();
+			
+			FileWriter fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"+
+				"0 NOTE Group 7 Test File for Sprint 2: US07\n"+
+				"0 I01 INDI\n"+            		//individual I01 dead for more than 150 years
+                		"1 BIRT\n"+
+                			"2 DATE 15 JUN 1869\n"+		//151 years old
+                		"1 DEAT\n"+
+                    			"2 DATE 11 APR 2020\n"+
+                		"0 I02 INDI\n"+						//individual I02 alive for more than 150 years	
+                		"1 BIRT\n"+						
+                   			"2 DATE 20 NOV 1820\n"+
+                		"0 I03 INDI\n"+						//individual I03 living within bounds	
+                		"1 BIRT\n"+
+                    			"2 DATE 20 NOV 1970\n"+ 
+                		"0 I04 INDI\n"+						//individual I04 dead within bounds	
+                		"1 BIRT\n"+
+                    			"2 DATE 20 NOV 1970\n"+
+                		"1 DEAT\n"+
+                			"2 DATE 11 APR 2020\n"
+                ); 
+			fw.close();
+			GEDCOM_Parser parser = new GEDCOM_Parser();
+			parser.parse(testGed,"US07test.txt");
+			testFile.delete();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        
+        //TEST FOR US 12
+        
+        try{
+            	String testGed = "testGed.ged";
+	    	File testFile = new File(testGed);
+		testFile.createNewFile();
+			
+		FileWriter fw = new FileWriter(testFile);
+		fw.write("0 HEAD\n"+
+			"0 NOTE Group 7 Test File for Sprint 2: US12\n"+
+			"0 I01 INDI\n"+            		//father I01 more than 80 years older than child I03  	
+                    	"1 FAMS F01\n"+
+                    	"1 BIRT\n"+
+                    		"2 DATE 15 JUN 1918\n"+
+                    	"1 DEAT\n"+
+                        	"2 DATE 11 APR 2020\n"+
+                	"0 I02 INDI\n"+					//mother I02 more than 60 years older than child I03	
+                    	"1 FAMS F01\n"+
+                    	"1 BIRT\n"+
+                       		"2 DATE 20 NOV 1900\n"+
+                    	"1 DEAT\n"+
+                        	"2 DATE 19 MAR 2010\n"+
+                	"0 I03 INDI\n"+					//child I03 	
+                    	"1 FAMC F01\n"+
+                    	"1 BIRT\n"+
+                        	"2 DATE 20 NOV 2009\n"+           
+                	"0 F01 FAM\n"+						//fam F01
+                    	"1 HUSB I01\n"+
+                    	"1 WIFE I02\n"+
+                    	"1 CHIL I03\n"+
+                    	"1 MARR\n"+
+                    		"2 DATE 11 DEC 2006\n"  
+                ); 
+	fw.close();
+	GEDCOM_Parser parser = new GEDCOM_Parser();
+	parser.parse(testGed,"US12test.txt");
+	testFile.delete();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 }
