@@ -264,15 +264,21 @@ public class GEDCOM_Parser{
 			for (Family fam : families.values()){
 				fam.sortChildIdsByAge(individuals);
 			}
-
-	        //User Story 10
-			fw.write(Validations.checkMarriageAge(families, individuals));
 			
-			//User Story 5
-			fw.write(Validations.checkMarriedBeforeDeath(families, individuals));
+			//User Story 12
+			fw.write(Validations.parents_not_old(families, individuals));
+		
+	        	//User Story 10
+			fw.write(Validations.checkMarriageAge(families, individuals));
+		
+			//User Story 7
+			fw.write(Validations.check_under_150(families, individuals));
 			
 			// User Story 6
 			fw.write(Validations.checkDivorcedBeforeDeath(families, individuals));
+		
+			//User Story 5
+			fw.write(Validations.checkMarriedBeforeDeath(families, individuals));
 
 			//User Story 2
 			fw.write(Validations.birth_before_marriage(families,individuals));
