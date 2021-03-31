@@ -267,6 +267,11 @@ public class GEDCOM_Parser{
 			//User Story 5
 			fw.write(Validations.checkMarriedBeforeDeath(families, individuals));
 
+			//User Story 2
+			fw.write(Validations.birth_before_marriage(families,individuals));
+
+			//User Story 4
+			fw.write(Validations.marriage_before_divorce(families, individuals));
 	        for(String id : indi_ids) {
 				try{
 				fw.write(individuals.get(id).toString() + "\n");
