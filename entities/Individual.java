@@ -18,6 +18,7 @@ public class Individual {
 	public Individual(String id, int lineNum) {
 		this.id = id;
 		this.lineNum = lineNum;
+		this.isAlive = true; // will be true unless the death date is set
 		this.child = new ArrayList<String>();
 		this.spouse = new ArrayList<String>();
 	}
