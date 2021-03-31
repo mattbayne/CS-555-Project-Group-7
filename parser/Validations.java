@@ -229,6 +229,69 @@ public static String marriage_before_divorce(HashMap<String, Family> families, H
     }
     return output;
 }
+    
+// User Story #07 - Less than 150 years old
+// (Death should be less than 150 years after birth for dead people, and current date should be less than 150 years after birth for all living people)
+
+public static String check_under_150(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+    String output = "";
+    for(String key : individuals.keySet()){
+        Individual person = individuals.get(key);
+        
+        if(!person.isAlive()){
+            if(person.getBirthday().yearsSince(person.getDeath().getJavaDate()) >= 150){
+                        output += "Error: Individual with ID: "+person.getId()+" | Death (" +person.getDeath()+") is greater than 150 years after birth ("+ person.getBirthday()+ ").\n";
+            } 
+        }
+        
+        if(person.isAlive()){
+            if(person.getBirthday().yearsSinceToday() >= 150){
+                        output += "Error: Individual with ID: "+person.getId()+" | Current date is greater than 150 years after birth ("+ person.getBirthday()+ ").\n";
+            } 
+        }
+    }
+    return output;
+}
+
+// User Story #12 - Parents not too old
+// (Mother should be less than 60 years older than her children and father should be less than 80 years older than his children)
+
+public static String parents_not_old(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+    String output = "";
+    for(String key : families.keySet()){
+        Family fam = families.get(key);
+        
+        if(!(individuals.get(fam.getWifeId()) == null)) {
+        	Individual mother = individuals.get(fam.getWifeId());
+        	if(!fam.getChildIds().isEmpty()){
+                for(String childId : fam.getChildIds()){
+                		Individual child = individuals.get(childId);
+                        //less than 60 
+                        if(mother.getBirthday().yearsSince(child.getBirthday().getJavaDate()) >= 60){
+                              output += "Error: Individual with ID: "+mother.getId()+" and Child with ID: "+mother.getId()+" Mother's birthday (" +mother.getBirthday()+") is greater than 60 years after childs birth ("+ child.getBirthday()+ ").\n";
+                        } 
+                }
+            }
+        	
+        }
+        
+        
+        if(!(individuals.get(fam.getHusbId()) == null)) {
+        	Individual father = individuals.get(fam.getHusbId());
+        	if(!fam.getChildIds().isEmpty()){
+                for(String childId : fam.getChildIds()){
+                		Individual child = individuals.get(childId);
+                        //less than 80
+                        if(father.getBirthday().yearsSince(child.getBirthday().getJavaDate()) >= 80){
+                              output += "Error: Individual with ID: "+father.getId()+" and Child with ID: "+child.getId()+" Father's birthday (" +father.getBirthday()+") is greater than 80 years after childs birth ("+ child.getBirthday()+ ").\n";
+                        } else {output+="didnt hit";}
+                }
+        	}
+        }
+    }
+    return output;
+} //end parents_not_old
+
 
 private static String generateError(Individual i){
     return "\nIndividual "+i.getId()+": Created on Line "+i.getLineNum();
