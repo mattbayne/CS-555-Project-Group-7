@@ -14,7 +14,7 @@ public class sprint2 {
 			
 			FileWriter fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"+
-				"0 NOTE Group 7 Test File for Sprint 2\n"+
+				"0 NOTE Group 7 Test File for Sprint 2: US28\n"+
 				"0 I01 INDI\n"+
                 "1 BIRT\n"+
                 "2 DATE 17 MAR 2010\n"+ // I01: youngest child

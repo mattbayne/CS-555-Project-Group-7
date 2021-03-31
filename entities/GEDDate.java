@@ -93,6 +93,7 @@ public class GEDDate {
 	private boolean isAfterCurrentDate() {
 		return (this.date).after(new Date());
 	}
+
 	
 	public String toString() {
 		return this.day + " " + months[this.month] + " " + this.year;
