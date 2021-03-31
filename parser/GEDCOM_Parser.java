@@ -194,11 +194,15 @@ public class GEDCOM_Parser{
 	        				// TODO FAMILY tags
 	        				else if (tag.equals(lvl1_tags[6])) { // HUSB tag for fam
 	        					current_fam.setHusbId(arg);
-	        					current_fam.setHusbName(individuals.get(arg).getName());
+	        					if(individuals.get(arg).getName() != null) {
+	        						current_fam.setHusbName(individuals.get(arg).getName());
+	        					}
 	        				}
 	        				else if (tag.equals(lvl1_tags[7])) { // WIFE tag for fam
 	        					current_fam.setWifeId(arg);
-	        					current_fam.setWifeName(individuals.get(arg).getName());
+	        					if(individuals.get(arg).getName() != null) {
+	        						current_fam.setWifeName(individuals.get(arg).getName());
+	        					}
 	        				}
 	        				else if (tag.equals(lvl1_tags[8])) { // CHIL tag for fam
 	        					current_fam.addChildIds(arg);
@@ -266,6 +270,9 @@ public class GEDCOM_Parser{
 			
 			//User Story 5
 			fw.write(Validations.checkMarriedBeforeDeath(families, individuals));
+			
+			// User Story 6
+			fw.write(Validations.checkDivorcedBeforeDeath(families, individuals));
 
 	        for(String id : indi_ids) {
 				try{
