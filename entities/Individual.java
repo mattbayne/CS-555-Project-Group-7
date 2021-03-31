@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.Date;
 public class Individual {
+	private int lineNum;	// the line number the Individual was created on
 	private String id;		// id of the individual
 	private String name;
 	private char gender;		// either 'M' or 'F'
@@ -14,13 +15,18 @@ public class Individual {
 	private ArrayList<String> spouse;	// ids of families
 	
 	// Constructor
-	public Individual(String id) {
+	public Individual(String id, int lineNum) {
 		this.id = id;
+		this.lineNum = lineNum;
 		this.child = new ArrayList<String>();
 		this.spouse = new ArrayList<String>();
 	}
 
 	// Getters and Setters
+	public int getLineNum(){
+		return lineNum;
+	}
+
 	public String getId() {
 		return id;
 	}

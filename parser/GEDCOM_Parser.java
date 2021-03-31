@@ -151,7 +151,7 @@ public class GEDCOM_Parser{
 	        			// create the last individual record to pull data for
 	        			if(individuals.get(id) == null) {
 	        				// individual does not yet exist
-	        				current_indi = new Individual(id); 
+	        				current_indi = new Individual(id,i); 
 	        				individuals.put(id, current_indi);
 	        				indi_ids.add(id);
 	        			} else {
