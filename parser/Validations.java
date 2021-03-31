@@ -132,13 +132,13 @@ public static String checkMarriedBeforeDeath(HashMap<String, Family> families, H
                 if(!wife.isAlive() && wife.getDeath()!= null){
                     Date wifeDeath = wife.getDeath().getJavaDate();
                     if(marriageDate.after(wifeDeath)){
-                        output += "Error: Wife death occurs before her marriage.\n";
+                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her marriage.\n";
                     }
                 }
                 if(!husb.isAlive() && husb.getDeath()!= null){
                     Date husbDeath = husb.getDeath().getJavaDate();
                     if(marriageDate.after(husbDeath)){
-                        output += "Error: Husband death occurs before his marriage.\n";
+                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his marriage.\n";
                     }
                 }
             }
@@ -164,13 +164,13 @@ public static String checkDivorcedBeforeDeath(HashMap<String, Family> families, 
                 if(!wife.isAlive() && wife.getDeath()!= null){
                     Date wifeDeath = wife.getDeath().getJavaDate();
                     if(divorceDate.after(wifeDeath)){
-                        output += "Error: Wife death occurs before her marriage.\n";
+                        output += "Error: Wife with id: "+ wife.getId() +" has death that occurs before her divorce.\n";
                     }
                 }
                 if(!husb.isAlive() && husb.getDeath()!= null){
                     Date husbDeath = husb.getDeath().getJavaDate();
                     if(divorceDate.after(husbDeath)){
-                        output += "Error: Husband death occurs before his marriage.\n";
+                        output += "Error: Husband with id: "+ husb.getId() +" has death that occurs before his divorce.\n";
                     }
                 }
             }
