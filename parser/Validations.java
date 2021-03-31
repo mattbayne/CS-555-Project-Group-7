@@ -1,5 +1,6 @@
 package parser;
 import entities.*;
+import java.util.Date;
 import java.util.HashMap;
 public class Validations {
     
@@ -112,5 +113,37 @@ public static String checkCorrespondingEntries(HashMap<String, Family> families,
     }
     return output;
 }
+
+/**
+ * Checks that marrige is before death of spouces
+ * @param families hashmap of all families
+ * @param individuals hashmap of all individuals
+ * @return string of inconsistencies or empty string if none found
+ */
+public static String checkMarriedBeforeDeath(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+    String output = "";
+    for(String key : families.keySet()){
+        Family fam = families.get(key);
+        if(fam.getWifeId() != null && fam.getHusbId() != null){
+            Individual wife = individuals.get(fam.getWifeId());
+            Individual husb = individuals.get(fam.getHusbId());
+            Date marriagDate = fam.getMarried().getJavaDate();
+            if(!wife.isAlive()){
+                Date wifeDeath = wife.getDeath().getJavaDate();
+                if(marriagDate.after(wifeDeath)){
+                    output += "Error: Wife death occurs before her marriage.\n";
+                }
+            }
+            if(!husb.isAlive()){
+                Date husbDeath = husb.getDeath().getJavaDate();
+                if(marriagDate.after(husbDeath)){
+                    output += "Error: Husband death occurs before his marriage.\n";
+                }
+            }
+        }
+    }
+    return output;
+}
+
 
 }// end class Validations
