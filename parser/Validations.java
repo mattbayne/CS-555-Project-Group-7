@@ -180,4 +180,47 @@ public static String checkDivorcedBeforeDeath(HashMap<String, Family> families, 
     return output;
 }
 
+public static String birth_before_marriage(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+    String output = "";
+    for(String key : families.keySet()){
+        Family fam = families.get(key);
+        if(fam.getMarried() != null){
+            if(fam.getWifeId() != null){
+                Individual wife = individuals.get(fam.getWifeId());
+                if(wife.getBirthday().getJavaDate().after(fam.getMarried().getJavaDate())){
+                    output += ("ERROR: INDIVIDUAL: US02: " + wife.getId() + " born on " + wife.getBirthday() + " after marriage date " + fam.getMarried() + "\n");
+                }
+            }
+            if(fam.getHusbId() != null){
+                Individual husb = individuals.get(fam.getHusbId());
+                if(husb.getBirthday().getJavaDate().after(fam.getMarried().getJavaDate())){
+                    output += ("ERROR: INDIVIDUAL: US02: " + husb.getId() + " born on " + husb.getBirthday() + " after marriage date " + fam.getMarried() + "\n");
+                }
+            }
+        }
+        
+    }
+    return output;
+}
+
+public static String marriage_before_divorce(HashMap<String, Family> families, HashMap<String, Individual> individuals){
+    String output = "";
+    for(String key : families.keySet()){
+        Family fam = families.get(key);
+        if(fam.getDivorced() != null){
+            if(fam.getWifeId() != null && fam.getHusbId() != null){
+                if(fam.getMarried().getJavaDate().after(fam.getDivorced().getJavaDate())){
+                    output += ("ERROR: FAMILY: US04: divorced " + fam.getDivorced() + " before married " + fam.getMarried() + "\n");
+                }
+            }   
+        }  
+    }
+    return output;
+}
+
+
+
+
+
+
 }// end class Validations
