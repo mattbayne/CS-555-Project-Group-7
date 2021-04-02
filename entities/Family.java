@@ -86,6 +86,21 @@ public class Family {
 	public void addChildIds(String childIds) {
 		this.childIds.add(childIds);
 	}
+	
+	public String[] getAsString() {
+		String[] values = new String[8];
+		
+		values[0] = " " + this.id;
+		values[1] = " " + ((this.married == null) ? "NA" : this.married.toString());
+		values[2] = " " + ((this.divorced == null) ? "NA" : this.divorced.toString());
+		values[3] = " " + ((this.husbId == null) ? "NA" : this.husbId);
+		values[4] = " " + ((this.husbName == null) ? "NA": this.husbName);
+		values[5] = " " + ((this.wifeId == null) ? "NA" : this.wifeId);
+		values[6] = " " + ((this.wifeName == null) ? "NA" : this.wifeName);
+		values[7] = " " + childIds.toString();
+		
+		return values;
+	}
 
 	/**
 	 * Will sort the arraylist of childIds by their age

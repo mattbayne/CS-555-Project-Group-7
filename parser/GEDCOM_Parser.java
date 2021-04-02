@@ -293,20 +293,11 @@ public class GEDCOM_Parser{
 	        }
 	        fw.write("\n\n");
 	        
+	        // outputs all of the data in table format
 	        TableBuilder tb = new TableBuilder();
 	        fw.write(tb.buildIndiTable(individuals));
+	        fw.write(tb.buildFamTable(families));
 	        
-	        for(String id : indi_ids) {
-				try{
-					fw.write(individuals.get(id).toString() + "\n");
-				} catch (Exception e){
-					fw.write(e.getMessage());
-				}
-			}
-	        
-	        for(String id : fam_ids) {
-	        	fw.write(families.get(id).toString() + "\n");
-	        }
 	        fw.close();
     	} catch (IOException e) {
     		e.printStackTrace();
