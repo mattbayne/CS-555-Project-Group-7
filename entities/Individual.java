@@ -101,14 +101,14 @@ public class Individual {
 	public String[] getAsString() {
 		String[] values = new String[8];
 		
-		values[0] = this.id;
-		values[1] = this.name;
-		values[2] = this.gender+"";
-		values[3] = (this.birthday != null) ? this.birthday.toString() : "NA";
-		values[4] = this.age+"";
-		values[5] = (this.death != null) ? this.death.toString() : "NA";
-		values[6] = this.child.toString();
-		values[7] = this.spouse.toString();
+		values[0] = " " + this.id;
+		values[1] = " " + ((this.name != null) ? this.name : "*not provided*");
+		values[2] = " " + ((this.gender == 0) ? this.gender+"" : "NA");
+		values[3] = " " + ((this.birthday != null) ? this.birthday.toString() : "NA");
+		values[4] = " " + this.age+"";
+		values[5] = " " + ((this.death != null) ? this.death.toString() : "NA");
+		values[6] = " " + this.child.toString();
+		values[7] = " " + this.spouse.toString();
 		
 		return values;
 	}
