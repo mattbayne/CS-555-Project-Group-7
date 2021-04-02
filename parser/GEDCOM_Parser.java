@@ -285,13 +285,25 @@ public class GEDCOM_Parser{
 
 			//User Story 4
 			fw.write(Validations.marriage_before_divorce(families, individuals));
+			
+			// get list of individuals
+	        fw.write("Living Singles: ");
+	        for (Individual indi : getListSingle()) {
+	        	fw.write(indi.getId() + " ");
+	        }
+	        fw.write("\n\n");
+	        
+	        TableBuilder tb = new TableBuilder();
+	        fw.write(tb.buildIndiTable(individuals));
+	        
 	        for(String id : indi_ids) {
 				try{
-				fw.write(individuals.get(id).toString() + "\n");
+					fw.write(individuals.get(id).toString() + "\n");
 				} catch (Exception e){
 					fw.write(e.getMessage());
 				}
 			}
+	        
 	        for(String id : fam_ids) {
 	        	fw.write(families.get(id).toString() + "\n");
 	        }
@@ -300,5 +312,22 @@ public class GEDCOM_Parser{
     		e.printStackTrace();
     	}
     } //end parse()
+    
+    /**
+     * List all living people over 30 who have never been married in a GEDCOM file
+     * @return arrayList of living singles
+     */
+    private ArrayList<Individual> getListSingle(){
+    	ArrayList<Individual> singles = new ArrayList<Individual>();
+    	
+    	for(Individual indi : individuals.values()) {
+    		// adds individual to list if they are alive and over 30 and never married
+    		if(indi.isAlive() && indi.getAge() > 30 && indi.getSpouse().isEmpty()) {
+    			singles.add(indi);
+    		}
+    	}
+    	
+    	return singles;
+    }
 
 } //end class
