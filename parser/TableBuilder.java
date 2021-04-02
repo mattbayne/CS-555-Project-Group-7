@@ -70,7 +70,7 @@ public class TableBuilder {
 				// gets the values from the family as strings
 				// also converts null values that make more sense in the table
 				String[] values = fam.getAsString();
-				table += String.format("|%-5s|%-13s|%-13s|%-8s|%-30s|%-8s|%-30s|%-30s|\\n", values[0],values[1],
+				table += String.format("|%-5s|%-13s|%-13s|%-8s|%-30s|%-8s|%-30s|%-30s|\n", values[0],values[1],
 						values[2],values[3],values[4],values[5],values[6],values[7]);
 			}
 		}
