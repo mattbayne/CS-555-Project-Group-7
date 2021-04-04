@@ -185,7 +185,7 @@ public class GEDCOM_Parser{
 	        				if(tag.equals(lvl1_tags[0])) { // NAME tag for individual
 	        					current_indi.setName(arg);
 	        				} else if (tag.equals(lvl1_tags[1])) { // SEX tag for individual
-	        					current_indi.setGender(arg.charAt(0));
+	        					current_indi.setGender(Character.toUpperCase(arg.charAt(0)));
 	        				} else if (tag.equals(lvl1_tags[4])) { // FAMC tag for individual
 	        					current_indi.addChild(arg);
 	        				} else if (tag.equals(lvl1_tags[5])) { // FAMS tag for individual
@@ -252,8 +252,10 @@ public class GEDCOM_Parser{
 	        	}	
 	        }
 
+			Validations validator = new Validations(this.families, this.individuals);
+
 			//User Story 26
-			fw.write(Validations.checkCorrespondingEntries(families, individuals));
+			fw.write(validator.checkCorrespondingEntries());
 
 			for(Individual indi : individuals.values()) {
 				indi.setAge();
@@ -266,25 +268,28 @@ public class GEDCOM_Parser{
 			}
 			
 			//User Story 12
-			fw.write(Validations.parents_not_old(families, individuals));
+			fw.write(validator.parents_not_old());
 		
 	        	//User Story 10
-			fw.write(Validations.checkMarriageAge(families, individuals));
+			fw.write(validator.checkMarriageAge());
 		
 			//User Story 7
-			fw.write(Validations.check_under_150(families, individuals));
+			fw.write(validator.check_under_150());
 			
 			// User Story 6
-			fw.write(Validations.checkDivorcedBeforeDeath(families, individuals));
+			fw.write(validator.checkDivorcedBeforeDeath());
 		
 			//User Story 5
-			fw.write(Validations.checkMarriedBeforeDeath(families, individuals));
+			fw.write(validator.checkMarriedBeforeDeath());
 
 			//User Story 2
-			fw.write(Validations.birth_before_marriage(families,individuals));
+			fw.write(validator.birth_before_marriage());
 
 			//User Story 4
-			fw.write(Validations.marriage_before_divorce(families, individuals));
+			fw.write(validator.marriage_before_divorce());
+
+			// User Story 21
+			fw.write(validator.checkGenderRoles());
 			
 			// get list of individuals
 	        fw.write("Living Singles: ");

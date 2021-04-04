@@ -11,8 +11,8 @@ public class sprint3 {
 		try {
 			String testGed = "testGed.ged";
 			File testFile = new File(testGed);
+
 			testFile.createNewFile();
-			
 			FileWriter fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"
 					+"0 NOTE Test GEDCOM File for Sprint 3: US31 (List Living Singles)\n"
@@ -58,6 +58,43 @@ public class sprint3 {
 			parser.parse(testGed, "US31.txt");
 			testFile.delete();
 			
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+"0 NOTE Test GEDCOM File for Sprint 3: US21 (Correct gender roles)\n"
+					+"0 I01 INDI\n"
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 2000\n"
+					+"1 SEX male\n"
+					+"1 FAMS F01\n"
+					+"0 I02 INDI\n"
+					+"1 BIRT\n"
+					+"2 DATE 20 AUG 1989\n"
+					+"1 SEX female\n"
+					+"1 FAMS F01\n"
+					+"0 I03 INDI\n"
+					+"1 BIRT\n"
+					+"2 DATE 1 JAN 2001\n"
+					+"1 SEX female\n"
+					+"1 FAMS F02\n"
+					+"0 I04 INDI\n"
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 1995\n"
+					+"1 SEX male\n"
+					+"1 FAMS F02\n"
+					+"0 F01 FAM\n"
+					+"1 HUSB I01\n"
+					+"1 WIFE I02\n"
+					+"0 F02 FAM\n"
+					+"1 HUSB I03\n"
+					+"1 WIFE I04\n"
+					+"0 TAIL\n"
+					);
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US21.txt");
+			testFile.delete();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

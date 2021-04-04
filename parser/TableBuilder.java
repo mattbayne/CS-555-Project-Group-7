@@ -26,6 +26,11 @@ public class TableBuilder {
 		famLine += "+\n";
 	}
 	
+	/**
+	 * Builds a table to represent all of the individuals data
+	 * @param individuals Hashmap of all individuals defined in the GEDCOM file
+	 * @return Table of individuals
+	 */
 	public String buildIndiTable(HashMap<String,Individual> individuals) {
 		String table = indiLine; 
 		// adds column labels
@@ -54,6 +59,11 @@ public class TableBuilder {
 		return table;
 	} // end buildIndiTable
 	
+	/**
+	 * Builds a table to represent all of the families data
+	 * @param families Hashmap of all families defined in the GEDCOM file
+	 * @return Table of families
+	 */
 	public String buildFamTable(HashMap<String,Family> families) {
 		String table = famLine;
 		
