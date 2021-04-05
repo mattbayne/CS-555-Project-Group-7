@@ -1,6 +1,9 @@
 package parser;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import entities.Family;
 import entities.Individual;
@@ -45,7 +48,22 @@ public class TableBuilder {
 			table += String.format("|%129s\n", "|");
 		}
 		else {
-			for(Individual indi : individuals.values()) {
+			// Sorting the individuals by their ids
+			Set<String> ids = individuals.keySet();
+			String[] ids_array = new String[ids.size()];
+			int ind = 0;
+			// iterates through all ids in the keySet and stores them in an array to be sorted
+			for(Iterator<String> it = ids.iterator(); it.hasNext(); ) {
+				String id = it.next();
+				ids_array[ind] = id;
+				ind++;
+			}
+			// Finally sort the String array
+			Arrays.sort(ids_array);
+			
+			// iterates through the sorted array of individual ids
+			for(String indi_id : ids_array) {
+				Individual indi = individuals.get(indi_id);
 				// gets the values from the individual as strings
 				// also converts null values into values that make more sense in the table
 				String[] values = indi.getAsString();
@@ -76,7 +94,22 @@ public class TableBuilder {
 			table += String.format("|%145s\n", "|");
 		}
 		else {
-			for(Family fam : families.values()) {
+			
+			// Sorting the families by their ids
+			Set<String> ids = families.keySet();
+			String[] ids_array = new String[ids.size()];
+			int ind = 0;
+			// iterates through all ids in the keySet and stores them in an array to be sorted
+			for(Iterator<String> it = ids.iterator(); it.hasNext(); ) {
+				String id = it.next();
+				ids_array[ind] = id;
+				ind++;
+			}
+			// Finally sort the String array
+			Arrays.sort(ids_array);
+			
+			for(String fam_id : ids_array) {
+				Family fam = families.get(fam_id);
 				// gets the values from the family as strings
 				// also converts null values that make more sense in the table
 				String[] values = fam.getAsString();
