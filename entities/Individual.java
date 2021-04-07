@@ -125,6 +125,8 @@ public class Individual {
 			else if (this.death.getJavaDate().getMonth() == this.birthday.getJavaDate().getMonth()){
 				if (this.death.getJavaDate().getDay() >= this.birthday.getJavaDate().getDay()){
 					age = death_year - birth_year;
+				} else {
+					age = death_year - birth_year - 1;
 				}
 			}
 			else{
