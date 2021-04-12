@@ -232,6 +232,24 @@ public class Validations {
         }
         return output;
     }
+
+    public String birth_before_death(){
+        String output = "";
+        for(String key : individuals.keySet()){
+            Individual indi = individuals.get(key);
+            if (indi.getDeath() != null){
+                if (indi.getDeath().getJavaDate().after(indi.getBirthday().getJavaDate())){
+                    continue;
+                }
+                else{
+                    output += ("ERROR: INDIVIDUAL: US03: born " + indi.getBirthday() + " after death " + indi.getDeath() +
+                    generateError(indi));
+                }
+            }
+
+        }
+        return output;
+    }
         
     // User Story #07 - Less than 150 years old
     // (Death should be less than 150 years after birth for dead people, and current date should be less than 150 years after birth for all living people)

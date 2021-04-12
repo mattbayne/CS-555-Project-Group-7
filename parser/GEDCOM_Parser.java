@@ -285,6 +285,9 @@ public class GEDCOM_Parser{
 			//User Story 2
 			fw.write(validator.birth_before_marriage());
 
+			//User Story 3
+			fw.write(validator.birth_before_death());
+
 			//User Story 4
 			fw.write(validator.marriage_before_divorce());
 
