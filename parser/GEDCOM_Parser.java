@@ -272,6 +272,12 @@ public class GEDCOM_Parser{
 				fam.sortChildIdsByAge(individuals);
 			}
 			
+			//User Story 16
+			fw.write(validator.checkMaleLastNames());
+			
+			//User Story 15
+			fw.write(validator.checkSiblingCount());
+		
 			//User Story 12
 			fw.write(validator.parents_not_old());
 		
