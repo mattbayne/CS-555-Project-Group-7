@@ -184,6 +184,11 @@ public class GEDCOM_Parser{
 	        				
 	        				if(tag.equals(lvl1_tags[0])) { // NAME tag for individual
 	        					current_indi.setName(arg);
+							if (arg.length()>1) {
+	        						String [] name = arg.split(" ");
+	        						String last_name = name[1];
+	        						current_indi.setLastName(last_name);
+	        					}
 	        				} else if (tag.equals(lvl1_tags[1])) { // SEX tag for individual
 	        					current_indi.setGender(Character.toUpperCase(arg.charAt(0)));
 	        				} else if (tag.equals(lvl1_tags[4])) { // FAMC tag for individual
