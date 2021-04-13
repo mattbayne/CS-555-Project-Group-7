@@ -305,7 +305,7 @@ public class Validations {
                             //less than 80
                             if(father.getBirthday().yearsSince(child.getBirthday().getJavaDate()) >= 80){
                                 output += "Error: Individual with ID: "+father.getId()+" and Child with ID: "+child.getId()+" Father's birthday (" +father.getBirthday()+") is greater than 80 years after childs birth ("+ child.getBirthday()+ ").\n";
-                            } else {output+="didnt hit";}
+                            } 
                     }
                 }
             }
