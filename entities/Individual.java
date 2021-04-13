@@ -6,6 +6,7 @@ public class Individual {
 	private int lineNum;	// the line number the Individual was created on
 	private String id;		// id of the individual
 	private String name;
+	private String lastName;
 	private char gender;		// either 'M' or 'F'
 	private GEDDate birthday;	// GEDDate of birth
 	private int age;
@@ -38,6 +39,14 @@ public class Individual {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public char getGender() {
