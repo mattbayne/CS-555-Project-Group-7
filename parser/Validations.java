@@ -335,6 +335,52 @@ public class Validations {
 
         return output;
     }
+    
+     // User Story #15 - Fewer than 15 siblings
+    // (There should be fewer than 15 siblings in a family)
+    public String checkSiblingCount() {
+    	String output = "";
+    
+    	 for (Family fam : families.values()){
+    		 int child_count = 0;
+    		 if(!fam.getChildIds().isEmpty()){
+                 for(String childId : fam.getChildIds()){
+                         child_count++;
+                 }
+    		 }
+    		 
+    		 if (!(child_count < 15)) {
+        		 output += "Error: There should be fewer than 15 siblings in a family: "+fam.getId()+ " has "+child_count+" children.\n" + generateError(fam);
+        	 }
+    	 }
+    	 
+    	 return output;
+    } //end checkSiblingCount()
+    
+    // User Story #16 - Male last names
+    // (All male members of a family should have the same last name)
+    public String checkMaleLastNames() {
+    	String output = "";
+    	String last_name;
+    	
+    	for (Family fam : families.values()){
+    		Individual husb = individuals.get(fam.getHusbId());
+    		last_name = husb.getLastName();
+
+    		if(!fam.getChildIds().isEmpty()){
+                for(String childId : fam.getChildIds()){
+                	Individual child = individuals.get(childId);
+                
+                	if(child.getGender()=='M') {
+                		if(!(child.getLastName().equals(last_name))){
+                			output += "Error: All male members of a family should have the same last name." + generateError(child,fam);
+                		}	
+                	}
+                }
+    		}
+    	}
+    	return output;
+    }
 
     private String generateError(Individual i){
         return "\n\tIndividual "+i.getId()+": Created on Line "+i.getLineNum()+"\n";
