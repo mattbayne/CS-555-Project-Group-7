@@ -94,6 +94,15 @@ public class GEDDate {
 		return (this.date).after(new Date());
 	}
 
+	/**
+	 * Checks if the date passed in has the same day, month, and year as this instance of GEDDate
+	 * @param date GEDDate to be checked against this instance
+	 * @return true if day, month, and year match, false otherwise
+	 */
+	public boolean equals(GEDDate date){
+		return this.day == date.day && this.month == date.month && this.year == date.year;
+	}
+
 	
 	public String toString() {
 		return this.day + " " + months[this.month] + " " + this.year;
