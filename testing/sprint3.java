@@ -366,14 +366,14 @@ public class sprint3 {
 					+"1 BIRT\n"
 					+"2 DATE 18 MAR 1970\n"
 					+"1 SEX male\n"
-					+"1 NAME Bob\n"
+					+"1 NAME Bob Smith\n"
 					+"1 FAMS F03\n"
 					+"1 FAMC F01\n"
 					+"0 I02 INDI\n"		
 					+"1 BIRT\n"
 					+"2 DATE 20 AUG 1969\n"
 					+"1 SEX female\n"
-					+"1 NAME Evie\n"
+					+"1 NAME Evie Ali\n"
 					+"1 FAMS F03\n"
 					+"1 FAMC F01\n"
 					+"0 I03 INDI\n"		
@@ -404,7 +404,7 @@ public class sprint3 {
 					);
 			fw.close();
 			parser = new GEDCOM_Parser();
-			parser.parse(testGed, "US08.txt");
+			parser.parse(testGed, "US18.txt");
 			testFile.delete();
 
 			//US23
@@ -427,11 +427,16 @@ public class sprint3 {
 					+"2 DATE 18 MAR 1970\n"
 					+"1 SEX male\n"
 					+"1 NAME John White\n"
+					+"0 I04 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 NAME Bob Smith\n"
 					+"0 TAIL\n"
 					);
 			fw.close();
 			parser = new GEDCOM_Parser();
-			parser.parse(testGed, "US08.txt");
+			parser.parse(testGed, "US23.txt");
 			testFile.delete();
 
 

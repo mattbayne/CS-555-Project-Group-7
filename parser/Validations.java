@@ -122,6 +122,7 @@ public class Validations {
         for(Family fam : families.values()){
             Individual wife = individuals.get(fam.getWifeId());
             Individual husb = individuals.get(fam.getHusbId());
+            if (wife == null || husb == null) continue;
             if(!wife.getChild().isEmpty()){
                 for(String famId : wife.getChild()){
                     if(husb.getChild().indexOf(famId) !=-1){
@@ -142,7 +143,14 @@ public class Validations {
         for(Individual person : individuals.values()){
             if(person.getName() != null){
                 String entry = person.getName() + person.getBirthday().toString();
-                if(set.contains(entry)){
+                boolean found = false;
+                for (String x : set) {
+                	if (x.equals(entry)) {
+                		found = true;
+                		break;
+                	}
+                }
+                if(found){
                     output = "ERROR: Two or more individuals have the same name and birthday.";
                     output += generateError(person);
                 }else{

@@ -55,7 +55,7 @@ public class sprint1 {
 			
 			fw.close();
 			parser = new GEDCOM_Parser();
-			parser.parse(testGed,"US03Test.txt");
+			parser.parse(testGed,"saSprint1Test.txt");
 			testFile.delete();
 
 

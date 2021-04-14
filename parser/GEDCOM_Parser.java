@@ -272,49 +272,111 @@ public class GEDCOM_Parser{
 				fam.sortChildIdsByAge(individuals);
 			}
 			
-			//User Story 16
-			fw.write(validator.checkMaleLastNames());
+			try {
+				//User Story 16
+				fw.write(validator.checkMaleLastNames());
+			} catch (Exception e) {
+				System.out.println("Error checking US16");
+			}
 			
-			//User Story 15
-			fw.write(validator.checkSiblingCount());
+			try{
+				//User Story 15
+				fw.write(validator.checkSiblingCount());
+			} catch (Exception e) {
+				System.out.println("Error checking US15");
+			}
 		
-			//User Story 12
-			fw.write(validator.parents_not_old());
-		
-	        //User Story 10
-			fw.write(validator.checkMarriageAge());
-
-			//User Story 8
-			fw.write(validator.birth_before_marriage_parents());
-
-			//User Story 9
-			fw.write(validator.birth_before_death_parents());
-		
-			//User Story 7
-			fw.write(validator.check_under_150());
+			try{
+				//User Story 12
+				fw.write(validator.parents_not_old());
+			} catch (Exception e) {
+				System.out.println("Error checking US12");
+			}
 			
-			// User Story 6
-			fw.write(validator.checkDivorcedBeforeDeath());
+			try {
+		        //User Story 10
+				fw.write(validator.checkMarriageAge());
+			} catch(Exception e) {
+				System.out.println("Error checking US10");
+			}
+
+			try {
+				//User Story 8
+				fw.write(validator.birth_before_marriage_parents());
+			} catch(Exception e) {
+				System.out.println("Error checking US08");
+			}
+			
+			try {
+				//User Story 9
+				fw.write(validator.birth_before_death_parents());
+			} catch (Exception e) {
+				System.out.println("Error checking US09");
+			}
+			
+			try {
+				//User Story 7
+				fw.write(validator.check_under_150());
+			} catch (Exception e) {
+				System.out.println("Error checking US07");
+			}
+			
+			try {
+				// User Story 6
+				fw.write(validator.checkDivorcedBeforeDeath());
+			} catch(Exception e) {
+				System.out.println("Error checking US06");
+			}
 		
-			//User Story 5
-			fw.write(validator.checkMarriedBeforeDeath());
+			try {
+				//User Story 5
+				fw.write(validator.checkMarriedBeforeDeath());
+			} catch(Exception e) {
+				System.out.println("Error checking US05");
+			}
+			
+			try {
+				//User Story 2
+				fw.write(validator.birth_before_marriage());
+			} catch(Exception e) {
+				System.out.println("Error checking US02");
+			}
+			
+			try {
+				//User Story 3
+				fw.write(validator.birth_before_death());
+			} catch (Exception e) {
+				System.out.println("Error checking US03");
+			}
+			
+			try {
+				//User Story 4
+				fw.write(validator.marriage_before_divorce());
+			} catch(Exception e) {
+				System.out.println("Error checking US04");
+			}
 
-			//User Story 2
-			fw.write(validator.birth_before_marriage());
+			try {
+				// User Story 21
+				fw.write(validator.checkGenderRoles());
+			} catch (Exception e) {
+				System.out.println("Error checking US21");
+			}
 
-			//User Story 3
-			fw.write(validator.birth_before_death());
-
-			//User Story 4
-			fw.write(validator.marriage_before_divorce());
-
-			// User Story 21
-			fw.write(validator.checkGenderRoles());
-
-			//User Story 18
-			fw.write(validator.siblingsNoMarry());
-			//User Story 23
-			fw.write(validator.uniqueNameAndDate());
+			try {
+				//User Story 18
+				fw.write(validator.siblingsNoMarry());
+			}catch(Exception e) {
+				System.out.println("Error checking US18");
+				e.printStackTrace();
+			}
+				
+			try {
+				//User Story 23
+				fw.write(validator.uniqueNameAndDate());
+			} catch(Exception e) {
+				System.out.println("Error checking US23");
+			}
 			
 			// get list of individuals
 	        fw.write("Living Singles: ");
