@@ -310,6 +310,11 @@ public class GEDCOM_Parser{
 
 			// User Story 21
 			fw.write(validator.checkGenderRoles());
+
+			//User Story 18
+			fw.write(validator.siblingsNoMarry());
+			//User Story 23
+			fw.write(validator.uniqueNameAndDate());
 			
 			// get list of individuals
 	        fw.write("Living Singles: ");

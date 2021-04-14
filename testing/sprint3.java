@@ -357,6 +357,84 @@ public class sprint3 {
 			parser.parse(testGed, "US08.txt");
 			testFile.delete();
 
+			//US18
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+"0 NOTE Test GEDCOM File for Sprint 3: US18 (Siblings are not married)\n"				
+					+"0 I01 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 NAME Bob\n"
+					+"1 FAMS F03\n"
+					+"1 FAMC F01\n"
+					+"0 I02 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 20 AUG 1969\n"
+					+"1 SEX female\n"
+					+"1 NAME Evie\n"
+					+"1 FAMS F03\n"
+					+"1 FAMC F01\n"
+					+"0 I03 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 1995\n"
+					+"1 SEX male\n"
+					+"1 FAMS F04\n"
+					+"1 FAMC F01\n"
+					+"0 I04 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 1996\n"
+					+"1 SEX female\n"
+					+"1 FAMS F04\n"
+					+"1 FAMC F02\n"
+					+"0 F01 FAM\n"		
+					+"1 CHIL I01\n"
+					+"1 CHIL I02\n"
+					+"1 CHIL I03\n"
+					+"0 F02 FAM\n"		
+					+"1 CHIL I04\n"
+					+"0 F03 FAM\n"		
+					+"1 HUSB I01\n"
+					+"1 WIFE I02\n"
+					+"0 F04 FAM\n"		
+					+"1 HUSB I03\n"
+					+"1 WIFE I04\n"
+					+"0 TAIL\n"
+					);
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US08.txt");
+			testFile.delete();
+
+			//US23
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+"0 NOTE Test GEDCOM File for Sprint 3: US18 (Siblings are not married)\n"				
+					+"0 I01 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 NAME Bob Smith\n"
+					+"0 I02 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 20 AUG 1969\n"
+					+"1 SEX male\n"
+					+"1 NAME Bob Smith\n"
+					+"0 I03 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 NAME John White\n"
+					+"0 TAIL\n"
+					);
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US08.txt");
+			testFile.delete();
+
+
 			
 			//US09
 			testFile.createNewFile();

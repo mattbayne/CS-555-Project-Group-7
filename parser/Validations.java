@@ -2,6 +2,7 @@ package parser;
 import entities.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Validations {
 
@@ -138,13 +139,15 @@ public class Validations {
     public String uniqueNameAndDate(){
         String output = "";
         ArrayList<String> set = new ArrayList<String>();
-        for(Individual person : individuals){
-            String entry = person.getName() + person.getBirthday().toString();
-            if(set.contains(entry)){
-                output = "ERROR: Two or more individuals have the same name and birthday.";
-                output += generateError(person);
-            }else{
-                set.add(entry);
+        for(Individual person : individuals.values()){
+            if(person.getName() != null){
+                String entry = person.getName() + person.getBirthday().toString();
+                if(set.contains(entry)){
+                    output = "ERROR: Two or more individuals have the same name and birthday.";
+                    output += generateError(person);
+                }else{
+                    set.add(entry);
+                }
             }
         }
         return output;
