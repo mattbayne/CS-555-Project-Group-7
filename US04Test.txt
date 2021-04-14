@@ -1,0 +1,30 @@
+ERROR: FAMILY: US04: divorced 5 APR 2005 before married 7 MAY 2018
+Family @F1@: Created on Line 25Individual:
+	Id:		@I1@
+	Name:		Bob
+	Gender:		M
+	Birthday:	4 MAY 1990
+	Age:		30
+	Alive:		Y
+	Death:		NA
+	Child:		[]
+	Spouse:		[@F1@]
+Individual:
+	Id:		@I2@
+	Name:		Mary
+	Gender:		F
+	Birthday:	9 AUG 1995
+	Age:		25
+	Alive:		Y
+	Death:		NA
+	Child:		[]
+	Spouse:		[@F1@]
+Family:
+	Id:	@F1@
+	Married:	7 MAY 2018
+	Divorced:	5 APR 2005
+	Husb Id:	@I1@
+	Husb Name:	Bob
+	Wife Id:	@I2@
+	Wife Name:	Mary
+	Children:	[]

@@ -115,6 +115,41 @@ public class Validations {
         return output;
     }
 
+    //User Story #18 Siblings should not marry one another
+    public String siblingsNoMarry(){
+        String output = "";
+        for(Family fam : families.values()){
+            Individual wife = individuals.get(fam.getWifeId());
+            Individual husb = individuals.get(fam.getHusbId());
+            if(!wife.getChild().isEmpty()){
+                for(String famId : wife.getChild()){
+                    if(husb.getChild().indexOf(famId) !=-1){
+                        output += "ERROR: Two siblings are married.";
+                        output += generateError(wife);
+                        output += generateError(husb, fam);
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+    //User Story #23 No more than one individual with the same name and birth date should appear
+    public String uniqueNameAndDate(){
+        String output = "";
+        ArrayList<String> set = new ArrayList<String>();
+        for(Individual person : individuals){
+            String entry = person.getName() + person.getBirthday().toString();
+            if(set.contains(entry)){
+                output = "ERROR: Two or more individuals have the same name and birthday.";
+                output += generateError(person);
+            }else{
+                set.add(entry);
+            }
+        }
+        return output;
+    }
+
 
     //User Story #8 birth of child has to be after marriage and prior to 9 months post divorce
     @SuppressWarnings("deprecation")
