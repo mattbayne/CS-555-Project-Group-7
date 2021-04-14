@@ -310,6 +310,103 @@ public class sprint3 {
 			parser.parse(testGed, "US16.txt");
 			testFile.delete();
 
+			//US08
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+"0 NOTE Test GEDCOM File for Sprint 3: US08 (Child born after parent marriage)\n"				
+					+"0 I01 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 FAMS F01\n"							
+					+"0 I02 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 20 AUG 1969\n"
+					+"1 SEX female\n"
+					+"1 FAMS F01\n"
+					+"0 I03 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 1995\n" //born before parents marriage
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 I04 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 1996\n" //born before parents marriage
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 I05 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 OCT 2010\n" //born 9 months+ parents divorce
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 F01 FAM\n"		
+					+"1 HUSB I01\n"
+					+"1 WIFE I02\n"
+					+"1 CHIL I03\n"
+					+"1 CHIL I04\n"
+					+"1 CHIL I05\n"
+					+"1 MARR\n"
+					+"2 DATE 10 JAN 2001\n"
+					+"1 DIV\n"
+                    +"2 DATE 30 DEC 2009\n"
+					+"0 TAIL\n"
+					);
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US08.txt");
+			testFile.delete();
+
+			
+			//US09
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+"0 NOTE Test GEDCOM File for Sprint 3: US08 (Child born after parent marriage)\n"				
+					+"0 I01 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 18 MAR 1970\n"
+					+"1 SEX male\n"
+					+"1 DEAT Y\n"
+					+"2 DATE 9 FEB 2016\n"
+					+"1 FAMS F01\n"							
+					+"0 I02 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 20 AUG 1969\n"
+					+"1 SEX female\n"
+					+"1 DEAT Y\n"
+					+"2 DATE 9 AUG 2018\n"
+					+"1 FAMS F01\n"
+					+"0 I03 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 2002\n" 
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 I04 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 NOV 2017\n" 
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 I05 INDI\n"		
+					+"1 BIRT\n"
+					+"2 DATE 30 AUG 2019\n"  //error because child born after mothers death and child born past 9 months after fathers death
+					+"1 SEX female\n"
+					+"1 FAMC F01\n"
+					+"0 F01 FAM\n"		
+					+"1 HUSB I01\n"
+					+"1 WIFE I02\n"
+					+"1 CHIL I03\n"
+					+"1 CHIL I04\n"
+					+"1 CHIL I05\n"
+					+"1 MARR\n"
+					+"2 DATE 10 JAN 2001\n"
+					+"0 TAIL\n"
+					);
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US09.txt");
+			testFile.delete();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

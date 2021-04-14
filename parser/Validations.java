@@ -39,6 +39,151 @@ public class Validations {
         return output;
     }
 
+    //User Story #9 birth of child has to be before death of mother and prior to 9 months post death of husband
+    @SuppressWarnings("deprecation")
+    public String birth_before_death_parents(){
+        HashMap<Integer, Integer[]> months_map = new HashMap<Integer, Integer[]>();
+                months_map.put(1,new Integer[]{1,2,3,4,5,6,7,8,9,10});
+                months_map.put(2,new Integer[]{2,3,4,5,6,7,8,9,10,11});
+                months_map.put(3,new Integer[]{3,4,5,6,7,8,9,10,11,12});
+                months_map.put(4,new Integer[]{4,5,6,7,8,9,10,11,12,1});
+                months_map.put(5,new Integer[]{5,6,7,8,9,10,11,12,1,2});
+                months_map.put(6,new Integer[]{6,7,8,9,10,11,12,1,2,3});
+                months_map.put(7,new Integer[]{7,8,9,10,11,12,1,2,3,4});
+                months_map.put(8,new Integer[]{8,9,10,11,12,1,2,3,4,5});
+                months_map.put(9,new Integer[]{9,10,11,12,1,2,3,4,5,6});
+                months_map.put(10,new Integer[]{10,11,12,1,2,3,4,5,6,7});
+                months_map.put(11,new Integer[]{11,12,1,2,3,4,5,6,7,8});
+                months_map.put(12,new Integer[]{12,1,2,3,4,5,6,7,8,9});
+        String output = "";
+        for(String key : families.keySet()){
+            Family fam = families.get(key);
+            if(fam.getWifeId() != null){
+                Individual wife = individuals.get(fam.getWifeId()); 
+                if (wife.getDeath() != null){
+                    if(!fam.getChildIds().isEmpty()){
+                        for(String childId : fam.getChildIds()){
+                            Individual child = individuals.get(childId);
+                            if (child.getBirthday().getJavaDate().after(wife.getDeath().getJavaDate())){
+                                output += ("ERROR: FAMILY: US09: Child " + childId + " was born " + child.getBirthday() + " after mothers death " + wife.getDeath() +
+                                generateError(fam));
+                            }        
+                        }
+                    }
+                }  
+            }
+            if (fam.getHusbId() != null){
+                Individual husb = individuals.get(fam.getHusbId());
+                if (husb.getDeath() != null){
+                    int husb_death_month = husb.getDeath().getJavaDate().getMonth() + 1;
+                    if(!fam.getChildIds().isEmpty()){
+                        for(String childId : fam.getChildIds()){
+                            Individual child = individuals.get(childId);
+                            int child_birth_month = child.getBirthday().getJavaDate().getMonth() + 1;
+                            if (child.getBirthday().getJavaDate().after(husb.getDeath().getJavaDate())){
+                                if (husb.getDeath().yearsSince(child.getBirthday().getJavaDate()) <= 1){
+                                    if(months_map.get(husb_death_month)!= null){
+                                        boolean in_range = false;
+                                        for (int i = 0; i < months_map.get(husb_death_month).length; i++){
+                                            if (months_map.get(husb_death_month)[i] != child_birth_month){
+                                                in_range = false;
+                                            }
+                                            else{
+                                                in_range = true;
+                                                break;
+                                            }
+                                        }
+                                       if (in_range == false){
+                                            output += ("ERROR: FAMILY: US09: Child " + childId + " born on " + child.getBirthday() +
+                                            " past 9 months after fathers death " + husb.getDeath() + generateError(fam));     
+                                        }
+                                    }  
+                                }  
+                                
+                                else {
+                                    output += ("ERROR: FAMILY: US09: Child " + childId + " born on " + child.getBirthday() +
+                                    " past 9 months after fathers death " + husb.getDeath() + generateError(fam));     
+    
+                                }
+                            }        
+                        }
+                    }
+                }  
+                }
+            }
+        
+        return output;
+    }
+
+
+    //User Story #8 birth of child has to be after marriage and prior to 9 months post divorce
+    @SuppressWarnings("deprecation")
+    public String birth_before_marriage_parents(){
+        HashMap<Integer, Integer[]> months_map = new HashMap<Integer, Integer[]>();
+                months_map.put(1,new Integer[]{1,2,3,4,5,6,7,8,9,10});
+                months_map.put(2,new Integer[]{2,3,4,5,6,7,8,9,10,11});
+                months_map.put(3,new Integer[]{3,4,5,6,7,8,9,10,11,12});
+                months_map.put(4,new Integer[]{4,5,6,7,8,9,10,11,12,1});
+                months_map.put(5,new Integer[]{5,6,7,8,9,10,11,12,1,2});
+                months_map.put(6,new Integer[]{6,7,8,9,10,11,12,1,2,3});
+                months_map.put(7,new Integer[]{7,8,9,10,11,12,1,2,3,4});
+                months_map.put(8,new Integer[]{8,9,10,11,12,1,2,3,4,5});
+                months_map.put(9,new Integer[]{9,10,11,12,1,2,3,4,5,6});
+                months_map.put(10,new Integer[]{10,11,12,1,2,3,4,5,6,7});
+                months_map.put(11,new Integer[]{11,12,1,2,3,4,5,6,7,8});
+                months_map.put(12,new Integer[]{12,1,2,3,4,5,6,7,8,9});
+        String output = "";
+        for(String key : families.keySet()){
+            Family fam = families.get(key);
+            if(fam.getMarried() != null){
+                if(!fam.getChildIds().isEmpty()){
+                    for(String childId : fam.getChildIds()){
+                        Individual child = individuals.get(childId);
+                        if (fam.getMarried().getJavaDate().after(child.getBirthday().getJavaDate())){
+                            output += ("ERROR: FAMILY: US08: Child " + childId + " was born " + child.getBirthday() + " before parents married " + fam.getMarried() +
+                                generateError(fam));
+                        }        
+                    }
+                }  
+            }
+            if (fam.getDivorced() != null){
+                if(!fam.getChildIds().isEmpty()){
+                    for(String childId : fam.getChildIds()){
+                        Individual child = individuals.get(childId);
+                        int divorce_month = fam.getDivorced().getJavaDate().getMonth() + 1;
+                        int child_birth_month = child.getBirthday().getJavaDate().getMonth() + 1;
+                        if (child.getBirthday().getJavaDate().after(fam.getDivorced().getJavaDate())){
+                            if (fam.getDivorced().yearsSince(child.getBirthday().getJavaDate()) <= 1){
+                                if(months_map.get(divorce_month)!= null){
+                                    boolean in_range = false;
+                                    for (int i = 0; i < months_map.get(divorce_month).length; i++){
+                                        if (months_map.get(divorce_month)[i] != child_birth_month){
+                                            in_range = false;
+                                        }
+                                        else{
+                                            in_range = true;
+                                            break;
+                                        }
+                                    }
+                                    if (in_range == false){
+                                        output += ("ERROR: FAMILY: US08: Child " + childId + " born on " + child.getBirthday() +
+                                        " past 9 months after divorce date " + fam.getDivorced() + generateError(fam));     
+                                    }
+                                }  
+                            }
+                            else {
+                                output += ("ERROR: FAMILY: US08: Child " + childId + " born on " + child.getBirthday() +
+                                " past 9 months after divorce date " + fam.getDivorced() + generateError(fam));     
+
+                            }
+                        }                               
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
     /**
      * Checks that each individual record has a corresponding record in families when necessary
      * @return string of inconsistencies or empty string if none found

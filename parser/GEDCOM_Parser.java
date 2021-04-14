@@ -281,8 +281,14 @@ public class GEDCOM_Parser{
 			//User Story 12
 			fw.write(validator.parents_not_old());
 		
-	        	//User Story 10
+	        //User Story 10
 			fw.write(validator.checkMarriageAge());
+
+			//User Story 8
+			fw.write(validator.birth_before_marriage_parents());
+
+			//User Story 9
+			fw.write(validator.birth_before_death_parents());
 		
 			//User Story 7
 			fw.write(validator.check_under_150());
