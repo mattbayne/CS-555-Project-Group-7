@@ -399,6 +399,12 @@ public class GEDCOM_Parser{
 	        	fw.write(indi.getId() + " ");
 	        }
 	        fw.write("\n\n");
+	        try {
+		        // get list of all orphans
+	        	fw.write("Orphans:" + getOrphans().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error listing orphans");
+	        }
 	        
 	        // outputs all of the data in table format
 	        TableBuilder tb = new TableBuilder();
@@ -426,6 +432,28 @@ public class GEDCOM_Parser{
     	}
     	
     	return singles;
+    }
+    
+    /**
+     * List all orphaned children (both parents dead and child < 18 years old) in a GEDCOM file
+     * @return arraylist of individual ids of all orphans
+     */
+    private ArrayList<String> getOrphans(){
+    	ArrayList<String> orphans = new ArrayList<String>();
+    	
+    	for (Individual indi : individuals.values()) {
+    		for (String famId : indi.getChild()) {
+    			Family fam = families.get(famId);
+    			// if both parents are dead and child is < 18 years old
+    			if(individuals.get(fam.getHusbId()).getDeath() != null &&
+    					individuals.get(fam.getWifeId()).getDeath() != null &&
+    					indi.getAge() < 18) {
+    				orphans.add(indi.getId());
+    			}
+    		}
+    	}
+    	
+    	return orphans;
     }
 
 } //end class
