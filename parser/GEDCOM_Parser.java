@@ -258,20 +258,28 @@ public class GEDCOM_Parser{
 	        }
 
 			Validations validator = new Validations(this.families, this.individuals);
-
-			//User Story 26
-			fw.write(validator.checkCorrespondingEntries());
-
-			for(Individual indi : individuals.values()) {
-				indi.setAge();
-			}
 			
-			// Sorts each families list of child Ids by their age
-			// this is done after the list
-			for (Family fam : families.values()){
-				fam.sortChildIdsByAge(individuals);
+			try {
+				//User Story 26
+				fw.write(validator.checkCorrespondingEntries());
+			} catch (Exception e) {
+				System.out.println("Error Checking US26\n");
 			}
+
+			try {
+				for(Individual indi : individuals.values()) {
+					indi.setAge();
+				}
 			
+				// Sorts each families list of child Ids by their age
+				// this is done after the list
+				for (Family fam : families.values()){
+					fam.sortChildIdsByAge(individuals);
+				}
+			} catch (Exception e) {
+				System.out.println("Error sorting by age\n");
+			}
+				
 			try {
 				//User Story 16
 				fw.write(validator.checkMaleLastNames());
@@ -376,6 +384,13 @@ public class GEDCOM_Parser{
 				fw.write(validator.uniqueNameAndDate());
 			} catch(Exception e) {
 				System.out.println("Error checking US23");
+			}
+			
+			try {
+				//User Story 25
+				fw.write(validator.uniqueFirstNamesInFamily());
+			} catch(Exception e) {
+				System.out.println("Error checking US25");
 			}
 			
 			// get list of individuals

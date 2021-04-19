@@ -573,6 +573,33 @@ public class Validations {
     	return output;
     }
 
+    /**
+     * US25
+     * No more than one child with the same name and birth date should appear in a family
+     * @return String of any errors encountered
+     */
+    public String uniqueFirstNamesInFamily() {
+    	String output = "";
+    	
+    	for(Family fam : families.values()) {
+    		ArrayList<String> encounteredNames = new ArrayList<String>(); // to keep track of child names that already exist
+    		for(String childId : fam.getChildIds()) {
+    			Individual child = individuals.get(childId);
+    			String firstName = child.getName().split(" ")[0];
+    			// in this case child name already exists in this family
+    			if (encounteredNames.contains(firstName)) {
+    				output += "ERROR: US25: Child " + childId + " in family " + fam.getId() + " must have a unique name." +
+    						generateError(child, fam);
+    				// do not break from loop because multiple children may have the same name
+    			} else {  // in this case child name is not yet encountered
+    				encounteredNames.add(firstName);
+    			}
+    		}
+    	}
+    	
+    	return output;
+    }
+    
     private String generateError(Individual i){
         return "\n\tIndividual "+i.getId()+": Created on Line "+i.getLineNum()+"\n";
     }
