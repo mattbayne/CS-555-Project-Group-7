@@ -58,6 +58,43 @@ public class sprint4 {
 			parser = new GEDCOM_Parser();
 			parser.parse(testGed, "US33.txt");
 			testFile.delete();
+			
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+ "0 NOTE Test GEDCOM File for Sprint 4: US34 (List Large Age Differences)\n"
+					+ "0 I01 INDI\n"  	//husband for F01 (error)
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 1950\n" //50yrs old at marriage
+					+ "1 FAMS F01\n"
+					+ "0 I02 INDI\n"	//wife for F01 (error)
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 1980\n" //20yrs old at marriage
+					+ "1 FAMS F01\n"
+					+ "0 I03 INDI\n"	//husband for F02 (correct)
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 1978\n"
+					+ "1 FAMS F02\n"
+					+ "0 I04 INDI\n"	//wife for F02 (correct)
+					+ "1 BIRT\n"
+					+ "2 DATE 2 DEC 1979\n"
+					+ "1 FAMS F02\n"
+					+ "0 F01 FAM\n"		//fam F01 (error)
+					+ "1 HUSB I01\n"
+					+ "1 WIFE I02\n"
+					+ "1 MARR\n"
+					+ "2 DATE 10 JAN 2000\n"
+					+ "0 F02 FAM\n"		//fam F02 (correct)
+					+ "1 HUSB I03\n"
+					+ "1 WIFE I04\n"
+					+ "1 MARR\n"
+					+ "2 DATE 10 JAN 2000\n"
+					+ "0 TAIL\n");
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US34.txt");
+			testFile.delete();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
