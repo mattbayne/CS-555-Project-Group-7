@@ -13,7 +13,7 @@ public class sprint4 {
 		try {
 			String testGed = "testGed.ged";
 			File testFile = new File(testGed);
-
+		// Test for US 25
 			testFile.createNewFile();
 			FileWriter fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"
@@ -32,7 +32,8 @@ public class sprint4 {
 			GEDCOM_Parser parser = new GEDCOM_Parser();
 			parser.parse(testGed, "US25.txt");
 			testFile.delete();
-			
+
+		// Test for US 33
 			testFile.createNewFile();
 			fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"
@@ -57,6 +58,36 @@ public class sprint4 {
 			fw.close();
 			parser = new GEDCOM_Parser();
 			parser.parse(testGed, "US33.txt");
+			testFile.delete();
+
+		//Test for US 38
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+ "0 NOTE Test GEDCOM File for Sprint 4: US38 (List Upcoming Birthdays)\n"
+					+ "0 I01 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 2018\n"
+					+ "0 I02 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 2018\n"
+					+ "1 DEAT\n"
+					+ "2 DATE 8 JAN 2020\n"
+					+ "0 I03 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 1994\n"
+					+ "1 DEAT\n"
+					+ "2 DATE 8 NOV 2020\n"
+					+ "0 I04 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 22 FEB 2001\n"
+					+ "0 I04 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 6 AUG 1977\n"
+					+ "0 TAIL\n");
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US38.txt");
 			testFile.delete();
 		} catch (IOException e) {
 			e.printStackTrace();

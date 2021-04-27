@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Date;
 
 import entities.*;
 
@@ -454,6 +455,30 @@ public class GEDCOM_Parser{
     	}
     	
     	return orphans;
+    }
+
+	/**
+     * List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+     * @return arraylist of individual ids of all upcoming bdays
+     */
+    private ArrayList<String> getUpcomingBirthdays(){
+    	ArrayList<String> people = new ArrayList<String>();
+    	for (Individual person : individuals.values()) {
+			if(person.getDeath() != null){
+				Date birthday = person.getBirthday().getJavaDate();
+				birthday.setYear(new Date().getYear());
+				if(birthday.getMonth() ==12 && birthday.getDay()!=1){
+					birthday.setYear(new Date().getYear() +1);
+				}
+				long bday = birthday.getTime();
+				long today = new Date().getTime();
+				long inThirtyDays = new Date().getTime() + 2592000000;
+				if(today < bday && bday < inThirtyDays){
+					people.add(person.getId());
+				}
+			}
+    	}
+    	return people;
     }
 
 } //end class
