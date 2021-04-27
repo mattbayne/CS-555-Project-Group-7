@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.List;
+import java.util.Date;
 
 import entities.*;
 
@@ -405,7 +406,21 @@ public class GEDCOM_Parser{
 	        } catch (Exception e) {
 	        	System.out.println("Error listing orphans");
 	        }
+			// get list of upcoming Birthdays
+				fw.write("Upcoming Birthdays: ");
+				getUpcomingBirthdays().toString() +'\n';
+				
+			// get list of upcoming Birthdays
+				fw.write("Upcoming Birthdays: ");
+				getUpcomingAnniversaries().toString() +'\n';
 	        
+		//get list of couples with large age difference
+	        try {
+	        	fw.write("Couples: " + getLargeAgeDiff().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error listing couples with large age differences");
+	        }
+		
 	        // outputs all of the data in table format
 	        TableBuilder tb = new TableBuilder();
 	        fw.write(tb.buildIndiTable(individuals));
@@ -454,6 +469,88 @@ public class GEDCOM_Parser{
     	}
     	
     	return orphans;
+    }
+	
+    // User Story #34 - List large age differences
+    // (List all couples who were married when the older spouse was more than twice as old as the younger spouse)
+    public ArrayList<String> getLargeAgeDiff() {
+    	ArrayList<String> couples = new ArrayList<String>();
+  
+    	for(String key : families.keySet()){
+            Family fam = families.get(key);
+            if(fam.getWifeId() != null && fam.getHusbId() != null){
+            	Individual wife = individuals.get(fam.getWifeId()), husb = individuals.get(fam.getHusbId());
+            	if(wife.getBirthday() != null && husb.getBirthday() != null){
+            		GEDDate wifeBday = wife.getBirthday(), husbBday = husb.getBirthday();
+            			if(fam.getMarried() != null) {
+            				Date marriage = fam.getMarried().getJavaDate();
+    
+            				int wifeAgeAtMarriage = wifeBday.yearsSince(marriage);
+            				int husbAgeAtMarriage = husbBday.yearsSince(marriage);
+
+            				if(wifeAgeAtMarriage > 2*husbAgeAtMarriage) {
+                                    couples.add("[" + wife.getId() + ", " + husb.getId() + "]");
+            				}
+            				else if(husbAgeAtMarriage > 2*wifeAgeAtMarriage) {
+            					couples.add("[" + husb.getId() + ", " + wife.getId() + "]");
+            				}
+            			}
+            	}
+            }
+    	} 
+    	return couples;
+    }
+
+	/**
+     * List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+     * @return arraylist of individual ids of all upcoming bdays
+     */
+    private ArrayList<String> getUpcomingBirthdays(){
+    	ArrayList<String> people = new ArrayList<String>();
+    	for (Individual person : individuals.values()) {
+			if(person.getDeath() != null){
+				Date birthday = person.getBirthday().getJavaDate();
+				birthday.setYear(new Date().getYear());
+				if(birthday.getMonth() ==12 && birthday.getDay()!=1){
+					birthday.setYear(new Date().getYear() +1);
+				}
+				long bday = birthday.getTime();
+				long today = new Date().getTime();
+				long inThirtyDays = new Date().getTime() + 2592000000;
+				if(today < bday && bday < inThirtyDays){
+					people.add(person.getId());
+				}
+			}
+    	}
+    	return people;
+    }
+
+	/**
+     * List all living couples in a GEDCOM file whose marriage anniversaries occur in the next 30 days
+     * @return arraylist of tuples of individuals' ids of the couple with an upcoming anniversary
+     */
+    private ArrayList<String> getUpcomingAnniversaries(){
+    	ArrayList<String> happyFamilies = new ArrayList<String>();
+    	for (Family fam : families.values()) {
+			if(fam.getMarried() != null){
+				Date marriage = fam.getMarried().getJavaDate();
+				marriage.setYear(new Date().getYear());
+				if(marriage.getMonth() ==12 && marriage.getDay()!=1){
+					marriage.setYear(new Date().getYear() +1);
+				}
+				long marr = marriage.getTime();
+				long today = new Date().getTime();
+				long inThirtyDays = new Date().getTime() + 2592000000;
+				if(today < marr && marr < inThirtyDays){
+					Individual wife = individuals.get(fam.getWifeId());
+					Individual husb = individuals.get(fam.getHusbId());
+					if(wife.getDeath()!= null && husb.getDeath() != null){
+						happyFamilies.add(fam.getId());
+					}
+				}
+			}
+    	}
+    	return happyFamilies;
     }
 
 } //end class
