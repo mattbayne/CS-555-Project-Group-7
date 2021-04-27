@@ -90,6 +90,39 @@ public class sprint4 {
 			parser.parse(testGed, "US38.txt");
 			testFile.delete();
 			
+			// Test for US 39
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+ "0 NOTE Test GEDCOM File for Sprint 4: US39 (List Upcoming Anniversaries)\n"
+					+ "0 I01 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 2018\n"
+					+ "1 FAMS F01\n"
+					+ "0 I02 INDI\n"
+					+ "1 FAMS F01\n"
+					+ "1 DEAT\n"
+					+ "2 DATE 8 JAN 2020\n"
+					+ "0 I03 INDI\n"
+					+ "1 FAMS F02\n"
+					+ "0 I04 INDI\n"
+					+ "1 FAMS F02\n"
+					+ "0 F01 FAM\n"
+					+ "1 HUSB I02\n"
+					+ "1 WIFE I01\n"
+					+ "1 MARR\n"
+					+ "2 DATE 4 NOV 2018"
+					+ "0 F02 FAM\n"
+					+ "1 HUSB I03\n"
+					+ "1 WIFE I04\n"
+					+ "1 MARR\n"
+					+ "2 DATE 18 APR 2016"
+					+ "0 TAIL\n");
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US39.txt");
+			testFile.delete();
+			
 			testFile.createNewFile();
 			fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"

@@ -406,6 +406,13 @@ public class GEDCOM_Parser{
 	        } catch (Exception e) {
 	        	System.out.println("Error listing orphans");
 	        }
+			// get list of upcoming Birthdays
+				fw.write("Upcoming Birthdays: ");
+				getUpcomingBirthdays().toString() +'\n';
+				
+			// get list of upcoming Birthdays
+				fw.write("Upcoming Birthdays: ");
+				getUpcomingAnniversaries().toString() +'\n';
 	        
 		//get list of couples with large age difference
 	        try {
@@ -516,6 +523,34 @@ public class GEDCOM_Parser{
 			}
     	}
     	return people;
+    }
+
+	/**
+     * List all living couples in a GEDCOM file whose marriage anniversaries occur in the next 30 days
+     * @return arraylist of tuples of individuals' ids of the couple with an upcoming anniversary
+     */
+    private ArrayList<String> getUpcomingAnniversaries(){
+    	ArrayList<String> happyFamilies = new ArrayList<String>();
+    	for (Family fam : families.values()) {
+			if(fam.getMarried() != null){
+				Date marriage = fam.getMarried().getJavaDate();
+				marriage.setYear(new Date().getYear());
+				if(marriage.getMonth() ==12 && marriage.getDay()!=1){
+					marriage.setYear(new Date().getYear() +1);
+				}
+				long marr = marriage.getTime();
+				long today = new Date().getTime();
+				long inThirtyDays = new Date().getTime() + 2592000000;
+				if(today < marr && marr < inThirtyDays){
+					Individual wife = individuals.get(fam.getWifeId());
+					Individual husb = individuals.get(fam.getHusbId());
+					if(wife.getDeath()!= null && husb.getDeath() != null){
+						happyFamilies.add(fam.getId());
+					}
+				}
+			}
+    	}
+    	return happyFamilies;
     }
 
 } //end class
