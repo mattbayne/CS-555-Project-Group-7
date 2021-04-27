@@ -463,6 +463,8 @@ public class GEDCOM_Parser{
     	return orphans;
     }
 	
+    // User Story #34 - List large age differences
+    // (List all couples who were married when the older spouse was more than twice as old as the younger spouse)
     public ArrayList<String> getLargeAgeDiff() {
     	ArrayList<String> couples = new ArrayList<String>();
   
