@@ -406,6 +406,13 @@ public class GEDCOM_Parser{
 	        	System.out.println("Error listing orphans");
 	        }
 	        
+		//get list of couples with large age difference
+	        try {
+	        	fw.write("Couples: " + getLargeAgeDiff().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error listing couples with large age differences");
+	        }
+		
 	        // outputs all of the data in table format
 	        TableBuilder tb = new TableBuilder();
 	        fw.write(tb.buildIndiTable(individuals));
@@ -454,6 +461,34 @@ public class GEDCOM_Parser{
     	}
     	
     	return orphans;
+    }
+	
+    public ArrayList<String> getLargeAgeDiff() {
+    	ArrayList<String> couples = new ArrayList<String>();
+  
+    	for(String key : families.keySet()){
+            Family fam = families.get(key);
+            if(fam.getWifeId() != null && fam.getHusbId() != null){
+            	Individual wife = individuals.get(fam.getWifeId()), husb = individuals.get(fam.getHusbId());
+            	if(wife.getBirthday() != null && husb.getBirthday() != null){
+            		GEDDate wifeBday = wife.getBirthday(), husbBday = husb.getBirthday();
+            			if(fam.getMarried() != null) {
+            				Date marriage = fam.getMarried().getJavaDate();
+    
+            				int wifeAgeAtMarriage = wifeBday.yearsSince(marriage);
+            				int husbAgeAtMarriage = husbBday.yearsSince(marriage);
+
+            				if(wifeAgeAtMarriage > 2*husbAgeAtMarriage) {
+                                    couples.add("[" + wife.getId() + ", " + husb.getId() + "]");
+            				}
+            				else if(husbAgeAtMarriage > 2*wifeAgeAtMarriage) {
+            					couples.add("[" + husb.getId() + ", " + wife.getId() + "]");
+            				}
+            			}
+            	}
+            }
+    	} 
+    	return couples;
     }
 
 } //end class
