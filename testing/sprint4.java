@@ -13,7 +13,7 @@ public class sprint4 {
 		try {
 			String testGed = "testGed.ged";
 			File testFile = new File(testGed);
-		// Test for US 25
+			// Test for US 25
 			testFile.createNewFile();
 			FileWriter fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"
@@ -22,18 +22,27 @@ public class sprint4 {
 					+"1 NAME John /Smith/\n"
 					+"1 FAMC F01\n"
 					+"0 I02 INDI\n"
+					+"1 NAME John /Jacobs/\n"
+					+"1 FAMC F01\n"
+					+"0 I03 INDI\n"
 					+"1 NAME John /Smith/\n"
+					+"1 FAMC F02\n"
+					+"0 I04 INDI\n"
+					+"1 NAME Allen /Smith/\n"
 					+"1 FAMC F01\n"
 					+"0 F01 FAM\n"
 					+"1 CHIL I01\n"
 					+"1 CHIL I02\n"
+					+"1 CHIL I04\n"
+					+"0 F02 FAM\n"
+					+"1 CHIL I03\n"
 					+"0 TAIL\n");
 			fw.close();
 			GEDCOM_Parser parser = new GEDCOM_Parser();
 			parser.parse(testGed, "US25.txt");
 			testFile.delete();
 
-		// Test for US 33
+			// Test for US 33
 			testFile.createNewFile();
 			fw = new FileWriter(testFile);
 			fw.write("0 HEAD\n"
@@ -50,10 +59,24 @@ public class sprint4 {
 					+ "1 FAMS F01\n"
 					+ "1 DEAT\n"
 					+ "2 DATE 8 JAN 2020\n"
+					+ "0 I04 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 14 JUN 2015\n"
+					+ "1 FAMC F02\n"
+					+ "0 I05 INDI\n"
+					+ "1 DEAT\n"
+					+ "2 DATE 5 AUG 2020\n"
+					+ "1 FAMS F02\n"
+					+ "0 I06 INDI\n"
+					+ "1 FAMS F02\n"
 					+ "0 F01 FAM\n"
 					+ "1 HUSB I02\n"
 					+ "1 WIFE I03\n"
 					+ "1 CHIL I01\n"
+					+ "0 F02 FAM\n"
+					+ "1 HUSB I05\n"
+					+ "1 WIFE I06\n"
+					+ "1 CHIL I04\n"
 					+ "0 TAIL\n");
 			fw.close();
 			parser = new GEDCOM_Parser();
