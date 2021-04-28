@@ -83,6 +83,56 @@ public class sprint4 {
 			parser.parse(testGed, "US33.txt");
 			testFile.delete();
 
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+ "0 NOTE Test GEDCOM File for Sprint 4: US35 (List Recent births)\n"
+					+ "0 I01 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 2021\n"
+					+ "0 I02 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 6 MAR 2021\n"
+					+ "0 I03 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 16 MAR 2020\n"
+					+ "0 I04 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 19 JAN 1950\n"
+					+ "0 TAIL\n");
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US35.txt");
+			testFile.delete();
+
+			testFile.createNewFile();
+			fw = new FileWriter(testFile);
+			fw.write("0 HEAD\n"
+					+ "0 NOTE Test GEDCOM File for Sprint 4: US36 (List Recent Deaths)\n"
+					+ "0 I01 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 2 MAR 2021\n"
+					+ "0 I02 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 6 MAR 2021\n"
+					+ "1 DEAT Y\n"
+					+ "2 DATE 9 APR 2021\n"
+					+ "0 I03 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 16 MAR 2020\n"
+					+ "1 DEAT Y\n"
+					+ "2 DATE 9 APR 2020\n"
+					+ "0 I04 INDI\n"
+					+ "1 BIRT\n"
+					+ "2 DATE 19 JAN 1950\n"
+					+ "1 DEAT Y\n"
+					+ "2 DATE 9 APR 2021\n"
+					+ "0 TAIL\n");
+			fw.close();
+			parser = new GEDCOM_Parser();
+			parser.parse(testGed, "US36.txt");
+			testFile.delete();
+
 		//Test for US 38
 			testFile.createNewFile();
 			fw = new FileWriter(testFile);

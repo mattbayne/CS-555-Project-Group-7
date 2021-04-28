@@ -405,6 +405,20 @@ public class GEDCOM_Parser{
 	        	fw.write("Orphans:" + getOrphans().toString() + "\n");
 	        } catch (Exception e) {
 	        	System.out.println("Error listing orphans");
+			}
+			
+			try {
+		        // get list of all recent births
+	        	fw.write("Recent Births:" + recentBirths().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error listing recent births");
+			}
+			
+			try {
+		        // get list of all recent deaths
+	        	fw.write("Recent Deaths:" + recentDeaths().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error listing recent deaths");
 	        }
 	        
 	        try {
@@ -560,6 +574,51 @@ public class GEDCOM_Parser{
 			}
     	}
     	return happyFamilies;
+	}
+
+	//US 35
+	@SuppressWarnings("deprecation")
+	private ArrayList<String> recentBirths(){
+    	ArrayList<String> births = new ArrayList<String>();
+    	for(Individual indi : individuals.values()) {
+    		// adds individual to list if they were born in the past thirty days from today
+			if (indi.getBirthday() != null){
+				Date today = new Date();
+				int month = today.getMonth() + 1;
+				if (indi.getAge() == 0){
+					if (((indi.getBirthday().getJavaDate().getMonth() + 1) == month) ||
+					((indi.getBirthday().getJavaDate().getMonth() + 1) == (month - 1))){
+						births.add(indi.getId());
+					}
+				}
+			}
+    	}
+
+    	return births;
+	}
+	
+	//US 36
+	@SuppressWarnings("deprecation")
+	private ArrayList<String> recentDeaths(){
+    	ArrayList<String> deaths = new ArrayList<String>();
+    	for(Individual indi : individuals.values()) {
+    		// adds individual to list if they died in the past thirty days from today
+			if (indi.getDeath() != null){
+				Date today = new Date();
+				int month = today.getMonth() + 1;
+				if (today.getYear() == indi.getDeath().getJavaDate().getYear()){
+					if (((indi.getDeath().getJavaDate().getMonth() + 1) == month) ||
+					((indi.getDeath().getJavaDate().getMonth() + 1) == (month - 1))){
+						deaths.add(indi.getId());
+					}
+				}
+				
+			}
+    	}
+
+    	return deaths;
     }
+	
+
 
 } //end class
