@@ -406,15 +406,22 @@ public class GEDCOM_Parser{
 	        } catch (Exception e) {
 	        	System.out.println("Error listing orphans");
 	        }
-			// get list of upcoming Birthdays
-				fw.write("Upcoming Birthdays: ");
-				getUpcomingBirthdays().toString() +'\n';
-				
-			// get list of upcoming Birthdays
-				fw.write("Upcoming Birthdays: ");
-				getUpcomingAnniversaries().toString() +'\n';
 	        
-		//get list of couples with large age difference
+	        try {
+			// get list of upcoming Birthdays
+			fw.write("Upcoming Birthdays: " + getUpcomingBirthdays().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error getting upcoming birthdays.");
+	        }
+				
+	        try {
+				// get list of upcoming Anniversaries
+				fw.write("Upcoming Anniversaries: " + getUpcomingAnniversaries().toString() + "\n");
+	        } catch (Exception e) {
+	        	System.out.println("Error getting upcoming anniversaries");
+	        }
+	        
+			//get list of couples with large age difference
 	        try {
 	        	fw.write("Couples: " + getLargeAgeDiff().toString() + "\n");
 	        } catch (Exception e) {
@@ -505,6 +512,7 @@ public class GEDCOM_Parser{
      * List all living people in a GEDCOM file whose birthdays occur in the next 30 days
      * @return arraylist of individual ids of all upcoming bdays
      */
+    @SuppressWarnings("deprecation")
     private ArrayList<String> getUpcomingBirthdays(){
     	ArrayList<String> people = new ArrayList<String>();
     	for (Individual person : individuals.values()) {
@@ -516,7 +524,7 @@ public class GEDCOM_Parser{
 				}
 				long bday = birthday.getTime();
 				long today = new Date().getTime();
-				long inThirtyDays = new Date().getTime() + 2592000000;
+				long inThirtyDays = new Date().getTime() + (25920 * 100000);
 				if(today < bday && bday < inThirtyDays){
 					people.add(person.getId());
 				}
@@ -529,6 +537,7 @@ public class GEDCOM_Parser{
      * List all living couples in a GEDCOM file whose marriage anniversaries occur in the next 30 days
      * @return arraylist of tuples of individuals' ids of the couple with an upcoming anniversary
      */
+    @SuppressWarnings("deprecation")
     private ArrayList<String> getUpcomingAnniversaries(){
     	ArrayList<String> happyFamilies = new ArrayList<String>();
     	for (Family fam : families.values()) {
@@ -540,7 +549,7 @@ public class GEDCOM_Parser{
 				}
 				long marr = marriage.getTime();
 				long today = new Date().getTime();
-				long inThirtyDays = new Date().getTime() + 2592000000;
+				long inThirtyDays = new Date().getTime() + (25920 * 100000);
 				if(today < marr && marr < inThirtyDays){
 					Individual wife = individuals.get(fam.getWifeId());
 					Individual husb = individuals.get(fam.getHusbId());
